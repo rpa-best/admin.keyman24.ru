@@ -1,0 +1,77 @@
+@import 'default';
+
+.topnav-wrapper {
+    padding: 20px 30px;
+    background-color: $black;
+    border-bottom: 2px solid $border;
+}
+
+.topnav {
+    height: 50px;
+}
+
+.title-wrapper {
+    align-items: center;
+    h1 {
+        font-family: 'Montserrat-Regular';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 24px;
+        line-height: 29px;
+        color: #ffffff;
+    }
+    h2 {
+        font-family: 'Montserrat-Regular';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        color: $gray;
+    }
+}
+
+.separator {
+    height: 100%;
+    width: 1px;
+    background-color: $gray;
+    margin: 0px 24px;
+}
+
+.tools-wrapper {
+    align-items: center;
+    .tools-icon {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .user-wrapper {
+        cursor: pointer;
+    }
+    .user {
+        padding: 0px 20px 0px 30px;
+        .name {
+            font-family: 'Montserrat-Regular';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            color: #fff;
+        }
+        .role {
+            font-family: 'Montserrat-Regular';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+    .search-line{
+        display: flex;
+        background-color: $black2;
+        border-radius: 50px;
+        padding: 10px 17px;
+        align-items: center;
+        text-align: center;
+    }
+}

@@ -39,12 +39,17 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: inherit;}
     font-family: 'Montserrat-Regular';
 }
 
+h1, h2, p, ul {
+    margin: 0px;
+    padding: 0px;
+}
+
 a {
     text-decoration: none;
     color: black;
-   &:hover {
+    &:hover {
         color: black;
-   }
+    }
 }
 
 @import "media";

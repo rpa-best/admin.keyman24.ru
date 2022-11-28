@@ -2,14 +2,9 @@
   "name": "keyman24",
   "version": "1.0.0",
   "description": "desctiption keyman24",
-  "main": "index.js",
-  "homepage": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=development SERVE=true webpack serve --config webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "lint": "eslint -c .eslintrc --ext .js,.jsx .",
     "lint:fix": "npm run lint -- --fix",
     "clean": "rm -R dist"
@@ -30,6 +25,7 @@
     "babel-loader": "^8.2.5",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.28.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-standard-with-typescript": "^23.0.0",
@@ -54,10 +50,16 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
+    "axios": "^1.2.0",
     "bootstrap": "^5.2.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bootstrap": "^2.6.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.39.5",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.3"
   }
 }

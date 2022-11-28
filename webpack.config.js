@@ -1,19 +1,20 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const Dotenv = require('dotenv-webpack');
 
 const PATHS = {
     src: path.join(__dirname, './src'),
     dist: path.join(__dirname, './dist'),
     assets: 'static',
-};
+}
 
-let mode = 'development';
-let target = 'web';
+let mode = 'development'
+let target = 'web'
 if (process.env.NODE_ENV === 'production') {
-    mode = 'production';
-    target = 'browserslist';
+    mode = 'production'
+    target = 'browserslist'
 }
 
 const plugins = [
@@ -25,10 +26,11 @@ const plugins = [
     new MiniCssExtractPlugin({
         filename: `${PATHS.assets}/css/[name].[contenthash].css`,
     }),
-];
+    new Dotenv(),
+]
 
 if (process.env.SERVE) {
-    plugins.push(new ReactRefreshWebpackPlugin());
+    plugins.push(new ReactRefreshWebpackPlugin())
 }
 
 module.exports = {
@@ -91,4 +93,4 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
-};
+}
