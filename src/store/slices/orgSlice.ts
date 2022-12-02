@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 import IOrganization from '../../models/IOrganization'
-
-const { API_URL } = process.env
-const { AUTHORIZATION } = process.env
+import OrgService from '../../services/OrgService'
 
 interface IOrgState {
     org: IOrganization[]
@@ -23,18 +20,13 @@ export const fetchOrg = createAsyncThunk<
     { rejectValue: any }
 >('org/fetchOrg', async (_, thunkApi) => {
     try {
-        const response = await axios.get(
-            `${API_URL}admin/org/`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${AUTHORIZATION}`,
-                },
-            },
-        )
+        const response = await OrgService.fetch()
+
         if (response.status !== 200) {
             throw new Error('Failed to fetch org.')
         }
+
+        console.log('test org', response.data)
 
         return response.data.results
     } catch (error) {
@@ -48,18 +40,8 @@ export const createOrg = createAsyncThunk<
     { rejectValue: any }
 >('org/createOrg', async (data: string, thunkApi) => {
     try {
-        const response = await axios.post(
-            `${API_URL}admin/org/`,
-            {
-                name: data,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${AUTHORIZATION}`,
-                },
-            },
-        )
+        const response = await OrgService.create(data)
+
         if (response.status !== 201) {
             throw new Error('Failed to create org.')
         }

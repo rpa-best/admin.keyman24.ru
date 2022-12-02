@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 import AuthResponse from '../../models/AuthResponse'
 import IUser from '../../models/IUser'
-
-const { API_URL } = process.env
+import AccountService from '../../services/AccountService'
 
 interface IUserState {
     user: IUser | null
@@ -24,54 +22,13 @@ const initialState: IUserState = {
     error: null,
 }
 
-// export const fetchUser = createAsyncThunk<
-//     AuthResponse,
-//     UserInput,
-//     { rejectValue: any }
-// >('user/fetchUser', async (data: UserInput, thunkApi) => {
-//     try {
-//         const response = await axios.post(
-//             `${API_URL}account/auth/?login_params=username_password`,
-//             {
-//                 username: data.username,
-//                 password: data.password,
-//             },
-//             {
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 },
-//             },
-//         )
-//         if (response.status !== 201) {
-//             throw new Error('Failed to fetch user.')
-//         }
-
-//         return response.data
-//     } catch (error) {
-//         return thunkApi.rejectWithValue(error)
-//     }
-// })
-
 export const login = createAsyncThunk<
     AuthResponse,
     UserInput,
     { rejectValue: any }
 >('user/login', async (data: UserInput, thunkApi) => {
     try {
-        // const response = await AuthService.login(data.username, data.password)
-
-        const response = await axios.post(
-            `${API_URL}account/auth/?login_params=username_password`,
-            {
-                username: data.username,
-                password: data.password,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            },
-        )
+        const response = await AccountService.login(data.username, data.password)
 
         if (response.status !== 201) {
             throw new Error('Failed to fetch user.')
@@ -86,34 +43,52 @@ export const login = createAsyncThunk<
     }
 })
 
-export const checkAuth = createAsyncThunk<
-    AuthResponse,
+// export const checkAuth = createAsyncThunk<
+//     AuthResponse,
+//     undefined,
+//     { rejectValue: any }
+// >('user/checkAuth', async (_, thunkApi) => {
+//     try {
+//         const access = localStorage.getItem('token')
+//         const response = await axios.post<AuthResponse>(
+//             `${API_URL}account/refresh-token/`,
+//             {
+//                 refresh: localStorage.getItem('tokenRefresh'),
+//             },
+//             {
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     Authorization: `Bearer ${access}`,
+//                 },
+//             },
+//         )
+
+//         if (response.status !== 200) {
+//             throw new Error('Failed  check auth.')
+//         }
+
+//         localStorage.setItem('token', response.data.access)
+//         localStorage.setItem('tokenRefresh', response.data.refresh)
+
+//         return response.data
+//     } catch (error) {
+//         return thunkApi.rejectWithValue(error.message)
+//     }
+// })
+
+export const setAuth = createAsyncThunk<
+    boolean,
     undefined,
     { rejectValue: any }
->('user/checkAuth', async (_, thunkApi) => {
+>('user/setAuth', async (_, thunkApi) => {
     try {
-        const access = localStorage.getItem('token')
-        const response = await axios.post<AuthResponse>(
-            `${API_URL}account/refresh-token/`,
-            {
-                refresh: localStorage.getItem('tokenRefresh'),
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${access}`,
-                },
-            },
-        )
+        const response = await AccountService.accountMe()
 
         if (response.status !== 200) {
             throw new Error('Failed  check auth.')
         }
 
-        localStorage.setItem('token', response.data.access)
-        localStorage.setItem('tokenRefresh', response.data.refresh)
-
-        return response.data
+        return true
     } catch (error) {
         return thunkApi.rejectWithValue(error.message)
     }
@@ -159,21 +134,38 @@ const userSlice = createSlice({
                 console.log('userSlice error in fetchUser.rejected')
             })
             // check auth
-            .addCase(checkAuth.pending, state => {
+            // .addCase(checkAuth.pending, state => {
+            //     state.isLoading = true
+            //     state.error = null
+            // })
+            // .addCase(checkAuth.fulfilled, (state, { payload }) => {
+            //     // state.user
+            //     state.isLoading = false
+            //     state.isAuth = true
+            //     state.error = null
+            // })
+            // .addCase(checkAuth.rejected, (state, action) => {
+            //     // state.error = action.payload?.message
+            //     state.isLoading = false
+            //     state.isAuth = false
+            //     console.log('userSlice error in checkAuth.rejected')
+            // })
+            // set auth
+            .addCase(setAuth.pending, state => {
                 state.isLoading = true
                 state.error = null
             })
-            .addCase(checkAuth.fulfilled, (state, { payload }) => {
-                // state.user
+            .addCase(setAuth.fulfilled, (state, { payload }) => {
                 state.isLoading = false
-                state.isAuth = true
+                state.isAuth = payload
                 state.error = null
             })
-            .addCase(checkAuth.rejected, (state, action) => {
-                // state.error = action.payload?.message
+            .addCase(setAuth.rejected, (state, action) => {
                 state.isLoading = false
                 state.isAuth = false
-                console.log('userSlice error in checkAuth.rejected')
+                localStorage.removeItem('token')
+                localStorage.removeItem('tokenRefresh')
+                console.log('userSlice error in setAuth.rejected')
             })
     },
 })

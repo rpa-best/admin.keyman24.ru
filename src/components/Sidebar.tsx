@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import '../assets/styles/scss/sidebar.scss'
 
 const Sidebar: FC = () => {
@@ -26,7 +27,7 @@ const Sidebar: FC = () => {
                     <div className='menu'>
                         <ul className='menu-links'>
                             <li className='nav-link'>
-                                <a href='/'>
+                                <Link to='/'>
                                     <span className='marker-link active' />
                                     <span className='icon'>
                                         <img
@@ -37,10 +38,10 @@ const Sidebar: FC = () => {
                                     <span className='text nav-text'>
                                         Главная
                                     </span>
-                                </a>
+                                </Link>
                             </li>
                             <li className='nav-link'>
-                                <a href='/'>
+                                <Link to='org'>
                                     <span className='marker-link' />
                                     <span className='icon'>
                                         <img
@@ -51,7 +52,35 @@ const Sidebar: FC = () => {
                                     <span className='text nav-text'>
                                         Организация
                                     </span>
-                                </a>
+                                </Link>
+                            </li>
+                            <li className='nav-link'>
+                                <Link to='device'>
+                                    <span className='marker-link' />
+                                    <span className='icon'>
+                                        <img
+                                            alt='sidebar-toggle'
+                                            src={require('../assets/img/sidebar/marker.svg')}
+                                        />
+                                    </span>
+                                    <span className='text nav-text'>
+                                        Устройство
+                                    </span>
+                                </Link>
+                            </li>
+                            <li className='nav-link'>
+                                <Link to='device-type'>
+                                    <span className='marker-link' />
+                                    <span className='icon'>
+                                        <img
+                                            alt='sidebar-toggle'
+                                            src={require('../assets/img/sidebar/layout-fluid.svg')}
+                                        />
+                                    </span>
+                                    <span className='text nav-text'>
+                                        Тип устройства
+                                    </span>
+                                </Link>
                             </li>
                         </ul>
                     </div>

@@ -1,24 +1,27 @@
 import React, { FC, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../hooks/redux-hooks'
-import { login, checkAuth } from '../store/slices/userSlice'
+import { login, setAuth } from '../store/slices/userSlice'
 import Form from '../components/Form'
 
 const LoginPage: FC = () => {
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const fromPage = location.state?.from?.pathname || '/'
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            dispatch(checkAuth()).then(() => {
-                navigate('/')
+            dispatch(setAuth()).then(() => {
+                navigate(fromPage)
             })
         }
-    }, [localStorage.getItem('token')])
+    }, [])
 
     const handleLogin = (username: string, password: string) => {
         dispatch(login({ username, password })).then(() => {
-            navigate('/')
+            navigate(fromPage)
         })
     }
 

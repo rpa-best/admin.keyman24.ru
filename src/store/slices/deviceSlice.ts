@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
 import IDevice from '../../models/IDevice'
-
-const { API_URL } = process.env
-const { AUTHORIZATION } = process.env
+import DeviceService from '../../services/DeviceService'
 
 interface IDeviceState {
     device: IDevice[]
@@ -28,12 +25,8 @@ export const fetchDevice = createAsyncThunk<
     { rejectValue: any }
 >('device/fetchDevice', async (_, thunkApi) => {
     try {
-        const response = await axios.get(`${API_URL}admin/device/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${AUTHORIZATION}`,
-            },
-        })
+        const response = await DeviceService.fetch()
+
         if (response.status !== 200) {
             throw new Error('Failed to fetch device.')
         }
@@ -50,19 +43,8 @@ export const createDevice = createAsyncThunk<
     { rejectValue: any }
 >('device/createDevice', async (data: IDeviceInput, thunkApi) => {
     try {
-        const response = await axios.post(
-            `${API_URL}admin/device/`,
-            {
-                name: data.name,
-                type: data.type,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${AUTHORIZATION}`,
-                },
-            },
-        )
+        const response = await DeviceService.create(data.name, data.type)
+
         if (response.status !== 201) {
             throw new Error('Failed to create device.')
         }

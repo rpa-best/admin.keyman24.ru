@@ -1,10 +1,8 @@
 import axios from 'axios'
 import AuthResponse from '../models/AuthResponse'
 
-export const { API_URL } = process.env
-
+const { API_URL } = process.env
 const $api = axios.create({
-    withCredentials: true,
     baseURL: API_URL,
 })
 
@@ -28,7 +26,15 @@ $api.interceptors.response.use(
             try {
                 const response = await axios.post<AuthResponse>(
                     `${API_URL}account/refresh-token/`,
-                    { withCredentials: true },
+                    {
+                        refresh: localStorage.getItem('tokenRefresh'),
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    },
                 )
                 localStorage.setItem('token', response.data.access)
                 localStorage.setItem('tokenRefresh', response.data.refresh)

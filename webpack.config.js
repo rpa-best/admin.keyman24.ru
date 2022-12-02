@@ -26,7 +26,9 @@ const plugins = [
     new MiniCssExtractPlugin({
         filename: `${PATHS.assets}/css/[name].[contenthash].css`,
     }),
-    new Dotenv(),
+    new Dotenv({
+        systemvars: true,
+    }),
 ]
 
 if (process.env.SERVE) {
