@@ -1,87 +1,89 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { FC, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { FC, Component, useEffect, useState } from 'react'
 import '../assets/styles/scss/sidebar.scss'
+import { LayoutGroup } from 'framer-motion'
+import SVGHome from '../assets/img/sidebar/home.svg'
+import SVGBuilding from '../assets/img/sidebar/building.svg'
+import SVGFingerprint from '../assets/img/sidebar/fingerprint.svg'
+import SVGMarker from '../assets/img/sidebar/marker.svg'
+import SVGDropdownArrow from '../assets/img/topnav/dropdown-arrow.svg'
+import SidebarLink, { SidebarLinkProps } from './SidebarLink'
 
 const Sidebar: FC = () => {
-    const [close, setClose] = useState('close')
+    const menuData: SidebarLinkProps[] = [
+        {
+            title: 'Главная',
+            link: '/',
+            Icon: SVGHome,
+        },
+        {
+            title: 'Организация',
+            link: '/org',
+            Icon: SVGBuilding,
+        },
+        {
+            title: 'Устройство',
+            link: '/device',
+            Icon: SVGFingerprint,
+        },
+        {
+            title: 'Тип устройства',
+            link: '/device-type',
+            Icon: SVGFingerprint,
+        },
+        {
+            title: 'Регион',
+            link: '/region',
+            Icon: SVGMarker,
+        },
+        {
+            title: 'Тип региона',
+            link: '/region-type',
+            Icon: SVGMarker,
+        },
+    ]
+
+    const [close, setClose] = useState(localStorage.getItem('sidebarActive'))
 
     const handleClose = () => {
-        return close === '' ? setClose('close') : setClose('')
+        if (close === '' || null) {
+            setClose('close')
+            localStorage.setItem('sidebarActive', 'close')
+        } else {
+            setClose('')
+            localStorage.setItem('sidebarActive', '')
+        }
     }
+
+    useEffect(() => {
+        if (localStorage.getItem('sidebarActive')) {
+            setClose(localStorage.getItem('sidebarActive'))
+        }
+    }, [close])
 
     return (
         <div className='sidebar-wrapper d-flex'>
             <nav className={`sidebar d-flex flex-column ${close}`}>
                 <div className='toggle-wrapper d-flex'>
                     <span className='toggle' onClick={handleClose}>
-                        <img
-                            alt='sidebar-toggle'
-                            src={require('../assets/img/topnav/dropdown-arrow.svg')}
-                        />
+                        <SVGDropdownArrow />
                     </span>
                 </div>
 
                 <div className='menu-bar d-flex h-100 flex-column justify-content-between'>
                     <div className='menu'>
                         <ul className='menu-links'>
-                            <li className='nav-link'>
-                                <Link to='/'>
-                                    <span className='marker-link active' />
-                                    <span className='icon'>
-                                        <img
-                                            alt='sidebar-toggle'
-                                            src={require('../assets/img/sidebar/home.svg')}
+                            <LayoutGroup>
+                                {menuData.map(item => {
+                                    return (
+                                        <SidebarLink
+                                            key={item.title}
+                                            {...item}
                                         />
-                                    </span>
-                                    <span className='text nav-text'>
-                                        Главная
-                                    </span>
-                                </Link>
-                            </li>
-                            <li className='nav-link'>
-                                <Link to='org'>
-                                    <span className='marker-link' />
-                                    <span className='icon'>
-                                        <img
-                                            alt='sidebar-toggle'
-                                            src={require('../assets/img/sidebar/building.svg')}
-                                        />
-                                    </span>
-                                    <span className='text nav-text'>
-                                        Организация
-                                    </span>
-                                </Link>
-                            </li>
-                            <li className='nav-link'>
-                                <Link to='device'>
-                                    <span className='marker-link' />
-                                    <span className='icon'>
-                                        <img
-                                            alt='sidebar-toggle'
-                                            src={require('../assets/img/sidebar/marker.svg')}
-                                        />
-                                    </span>
-                                    <span className='text nav-text'>
-                                        Устройство
-                                    </span>
-                                </Link>
-                            </li>
-                            <li className='nav-link'>
-                                <Link to='device-type'>
-                                    <span className='marker-link' />
-                                    <span className='icon'>
-                                        <img
-                                            alt='sidebar-toggle'
-                                            src={require('../assets/img/sidebar/layout-fluid.svg')}
-                                        />
-                                    </span>
-                                    <span className='text nav-text'>
-                                        Тип устройства
-                                    </span>
-                                </Link>
-                            </li>
+                                    )
+                                })}
+                            </LayoutGroup>
                         </ul>
                     </div>
                 </div>

@@ -52,7 +52,7 @@
 
 .sidebar .text,
 .sidebar .icon{
-    color: var(--text-color);
+    // color: var(--text-color);
     transition: var(--tran-03);
 }
 
@@ -88,7 +88,7 @@
     transition: var(--tran-05);
 }
 
-.sidebar.close .toggle img{
+.sidebar.close .toggle svg{
     transform: rotate(180deg);
 }
 
@@ -120,7 +120,7 @@
 }
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text{
-    color: var(--sidebar-color);
+    // color: var(--sidebar-color);
 }
 body.dark .sidebar li a:hover .icon,
 body.dark .sidebar li a:hover .text{

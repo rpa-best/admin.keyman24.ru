@@ -1,16 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, AnyAction, PayloadAction } from '@reduxjs/toolkit'
+import { isError } from '../../helpers/isError'
 import IDevice from '../../models/IDevice'
+import IDeviceInput from '../../models/input/IDeviceInput'
 import DeviceService from '../../services/DeviceService'
 
 interface IDeviceState {
     device: IDevice[]
     isLoading: boolean
     error: string | null
-}
-
-interface IDeviceInput {
-    name: string
-    type: string
 }
 
 const initialState: IDeviceState = {
@@ -43,7 +40,7 @@ export const createDevice = createAsyncThunk<
     { rejectValue: any }
 >('device/createDevice', async (data: IDeviceInput, thunkApi) => {
     try {
-        const response = await DeviceService.create(data.name, data.type)
+        const response = await DeviceService.create(data)
 
         if (response.status !== 201) {
             throw new Error('Failed to create device.')
@@ -71,11 +68,11 @@ const deviceSlice = createSlice({
                 state.error = null
                 console.log('device fulfilled')
             })
-            .addCase(fetchDevice.rejected, (state, action) => {
-                state.error = action.payload?.message
-                state.isLoading = false
-                console.log('deviceSlice error in fetchDevice.rejected')
-            })
+            // .addCase(fetchDevice.rejected, (state, action) => {
+            //     state.error = action.payload?.message
+            //     state.isLoading = false
+            //     console.log('deviceSlice error in fetchDevice.rejected')
+            // })
             // create device
             .addCase(createDevice.pending, state => {
                 state.isLoading = true
@@ -87,10 +84,14 @@ const deviceSlice = createSlice({
                 state.error = null
                 console.log('create device fulfilled')
             })
-            .addCase(createDevice.rejected, (state, action) => {
-                state.error = action.payload?.message
+            // .addCase(createDevice.rejected, (state, action) => {
+            //     state.error = action.payload?.message
+            //     state.isLoading = false
+            //     console.log('deviceSlice error in createDevice.rejected')
+            // })
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
+                state.error = action.payload
                 state.isLoading = false
-                console.log('deviceSlice error in createDevice.rejected')
             })
     },
 })

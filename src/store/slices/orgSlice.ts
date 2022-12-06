@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { isError } from '../../helpers/isError'
 import IOrganization from '../../models/IOrganization'
 import OrgService from '../../services/OrgService'
 
@@ -25,8 +26,6 @@ export const fetchOrg = createAsyncThunk<
         if (response.status !== 200) {
             throw new Error('Failed to fetch org.')
         }
-
-        console.log('test org', response.data)
 
         return response.data.results
     } catch (error) {
@@ -69,11 +68,6 @@ const orgSlice = createSlice({
                 state.error = null
                 console.log('org fulfilled')
             })
-            .addCase(fetchOrg.rejected, (state, action) => {
-                state.error = action.payload?.message
-                state.isLoading = false
-                console.log('orgSlice error in fetchOrg.rejected')
-            })
             // create org
             .addCase(createOrg.pending, state => {
                 state.isLoading = true
@@ -85,10 +79,9 @@ const orgSlice = createSlice({
                 state.error = null
                 console.log('create org fulfilled')
             })
-            .addCase(createOrg.rejected, (state, action) => {
-                state.error = action.payload?.message
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
+                state.error = action.payload
                 state.isLoading = false
-                console.log('orgSlice error in createOrg.rejected')
             })
     },
 })

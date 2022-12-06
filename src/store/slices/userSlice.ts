@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import AuthResponse from '../../models/AuthResponse'
+import IAccountDetail from '../../models/IAccountDetail'
 import IUser from '../../models/IUser'
 import AccountService from '../../services/AccountService'
 
 interface IUserState {
-    user: IUser | null
+    user: IAccountDetail | null
     isAuth: boolean
     isLoading: boolean
     error: string | null
@@ -22,20 +23,17 @@ const initialState: IUserState = {
     error: null,
 }
 
-export const login = createAsyncThunk<
+export const auth = createAsyncThunk<
     AuthResponse,
     UserInput,
     { rejectValue: any }
->('user/login', async (data: UserInput, thunkApi) => {
+>('user/auth', async (data: UserInput, thunkApi) => {
     try {
-        const response = await AccountService.login(data.username, data.password)
+        const response = await AccountService.auth(data.username, data.password)
 
         if (response.status !== 201) {
             throw new Error('Failed to fetch user.')
         }
-
-        localStorage.setItem('token', response.data.access)
-        localStorage.setItem('tokenRefresh', response.data.refresh)
 
         return response.data
     } catch (error) {
@@ -43,41 +41,8 @@ export const login = createAsyncThunk<
     }
 })
 
-// export const checkAuth = createAsyncThunk<
-//     AuthResponse,
-//     undefined,
-//     { rejectValue: any }
-// >('user/checkAuth', async (_, thunkApi) => {
-//     try {
-//         const access = localStorage.getItem('token')
-//         const response = await axios.post<AuthResponse>(
-//             `${API_URL}account/refresh-token/`,
-//             {
-//                 refresh: localStorage.getItem('tokenRefresh'),
-//             },
-//             {
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     Authorization: `Bearer ${access}`,
-//                 },
-//             },
-//         )
-
-//         if (response.status !== 200) {
-//             throw new Error('Failed  check auth.')
-//         }
-
-//         localStorage.setItem('token', response.data.access)
-//         localStorage.setItem('tokenRefresh', response.data.refresh)
-
-//         return response.data
-//     } catch (error) {
-//         return thunkApi.rejectWithValue(error.message)
-//     }
-// })
-
 export const setAuth = createAsyncThunk<
-    boolean,
+    IAccountDetail,
     undefined,
     { rejectValue: any }
 >('user/setAuth', async (_, thunkApi) => {
@@ -88,7 +53,7 @@ export const setAuth = createAsyncThunk<
             throw new Error('Failed  check auth.')
         }
 
-        return true
+        return response.data
     } catch (error) {
         return thunkApi.rejectWithValue(error.message)
     }
@@ -105,59 +70,51 @@ const userSlice = createSlice({
             state.isLoading = action.payload.isLoading
         },
         setUser: (state, action: PayloadAction<IUser>) => {
-            state.user = {
-                username: action.payload.username,
-                name: null,
-                surname: null,
-                lastname: null,
-            }
+            // state.user = {
+            //     username: action.payload.username,
+            //     name: null,
+            //     lastname: null,
+            //     surname: null,
+            //     phone: null,
+            //     gender: null,
+            //     birthday: null,
+            // }
         },
-        logout: () => initialState,
+        logout: () => {
+            localStorage.removeItem('token')
+            localStorage.removeItem('tokenRefresh')
+            return initialState
+        },
     },
     extraReducers: builder => {
         builder
-            .addCase(login.pending, state => {
+            .addCase(auth.pending, state => {
                 state.isLoading = true
                 state.error = null
             })
-            .addCase(login.fulfilled, (state, { payload }) => {
+            .addCase(auth.fulfilled, (state, { payload }) => {
                 // state.user
+                localStorage.setItem('token', payload.access)
+                localStorage.setItem('tokenRefresh', payload.refresh)
                 state.isLoading = false
                 state.isAuth = true
                 state.error = null
-                console.log('isAuth = true')
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(auth.rejected, (state, action) => {
                 state.error = action.payload?.message
                 state.isLoading = false
                 state.isAuth = false
                 console.log('userSlice error in fetchUser.rejected')
             })
-            // check auth
-            // .addCase(checkAuth.pending, state => {
-            //     state.isLoading = true
-            //     state.error = null
-            // })
-            // .addCase(checkAuth.fulfilled, (state, { payload }) => {
-            //     // state.user
-            //     state.isLoading = false
-            //     state.isAuth = true
-            //     state.error = null
-            // })
-            // .addCase(checkAuth.rejected, (state, action) => {
-            //     // state.error = action.payload?.message
-            //     state.isLoading = false
-            //     state.isAuth = false
-            //     console.log('userSlice error in checkAuth.rejected')
-            // })
             // set auth
             .addCase(setAuth.pending, state => {
                 state.isLoading = true
                 state.error = null
             })
             .addCase(setAuth.fulfilled, (state, { payload }) => {
+                state.user = payload
                 state.isLoading = false
-                state.isAuth = payload
+                state.isAuth = true
                 state.error = null
             })
             .addCase(setAuth.rejected, (state, action) => {
@@ -170,6 +127,6 @@ const userSlice = createSlice({
     },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser, logout } = userSlice.actions
 
 export default userSlice.reducer

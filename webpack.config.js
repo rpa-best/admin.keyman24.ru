@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require('dotenv-webpack')
 
 const PATHS = {
     src: path.join(__dirname, './src'),
@@ -77,11 +77,16 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
+                test: /\.(png|jpe?g|gif|webp|ico)$/i,
                 type: mode === 'production' ? 'asset' : 'asset/resource',
                 generator: {
                     filename: `${PATHS.assets}/img/[hash][ext][query]`,
                 },
+            },
+            {
+                test: /\.svg$/i,
+                issuer: /\.[jt]sx?$/,
+                use: ['@svgr/webpack'],
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)$/i,

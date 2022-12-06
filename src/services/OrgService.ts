@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import IOrganization from '../models/IOrganization'
-import $api from '../https'
+import $api from '../http'
 
 export default class OrgService {
     static async fetch(): Promise<AxiosResponse> {

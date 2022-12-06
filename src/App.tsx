@@ -8,6 +8,8 @@ import PrivateRoute from './utils/PrivateRoute'
 import Organization from './components/Organization'
 import Device from './components/Device'
 import DeviceType from './components/DeviceType'
+import Region from './components/Region'
+import RegionType from './components/RegionType'
 
 const App: FC = () => {
     return (
@@ -15,10 +17,15 @@ const App: FC = () => {
             <Routes>
                 <Route element={<PrivateRoute />}>
                     <Route path='/' element={<MainPage />}>
-                        <Route index element={<h1 className='h1'>Main Page</h1>} />
+                        <Route
+                            index
+                            element={<h1 className='h1'>Main Page</h1>}
+                        />
                         <Route path='/org' element={<Organization />} />
                         <Route path='/device' element={<Device />} />
                         <Route path='/device-type' element={<DeviceType />} />
+                        <Route path='/region' element={<Region />} />
+                        <Route path='/region-type' element={<RegionType />} />
                     </Route>
                 </Route>
                 <Route path='/login' element={<LoginPage />} />

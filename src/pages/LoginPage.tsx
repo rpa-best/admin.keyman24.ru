@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../hooks/redux-hooks'
-import { login, setAuth } from '../store/slices/userSlice'
+import { auth, setAuth } from '../store/slices/userSlice'
 import Form from '../components/Form'
 
 const LoginPage: FC = () => {
@@ -20,7 +20,7 @@ const LoginPage: FC = () => {
     }, [])
 
     const handleLogin = (username: string, password: string) => {
-        dispatch(login({ username, password })).then(() => {
+        dispatch(auth({ username, password })).then(() => {
             navigate(fromPage)
         })
     }

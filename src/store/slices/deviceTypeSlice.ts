@@ -1,18 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import {
+    createSlice,
+    createAsyncThunk,
+    PayloadAction,
+} from '@reduxjs/toolkit'
 import IDeviceType from '../../models/IDeviceType'
-
-const { API_URL } = process.env
+import DeviceTypeService from '../../services/DeviceTypeService'
+import { isError } from '../../helpers/isError'
+import IDeviceTypeInput from '../../models/input/IDeviceTypeInput'
 
 interface IDeviceTypeState {
     types: IDeviceType[]
     isLoading: boolean
     error: string | null
-}
-
-interface IDeviceTypeInput {
-    slug: string
-    name: string
 }
 
 const initialState: IDeviceTypeState = {
@@ -27,12 +26,8 @@ export const fetchDeviceType = createAsyncThunk<
     { rejectValue: any }
 >('deviceType/fetchDeviceType', async (_, thunkApi) => {
     try {
-        const response = await axios.get(`${API_URL}admin/device/type/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-        })
+        const response = await DeviceTypeService.fetch()
+
         if (response.status !== 200) {
             throw new Error('Failed to fetch deviceType.')
         }
@@ -49,20 +44,7 @@ export const createDeviceType = createAsyncThunk<
     { rejectValue: any }
 >('deviceType/createDeviceType', async (data: IDeviceTypeInput, thunkApi) => {
     try {
-        const response = await axios.post(
-            `${API_URL}admin/device/type/`,
-            {
-                name: data.name,
-                slug: data.slug,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            },
-        )
-        console.log(response)
+        const response = await DeviceTypeService.create(data)
 
         if (response.status !== 201) {
             throw new Error('Failed to create deviceType.')
@@ -90,29 +72,20 @@ const deviceTypeSlice = createSlice({
                 state.error = null
                 console.log('device type fulfilled')
             })
-            .addCase(fetchDeviceType.rejected, (state, action) => {
-                state.error = action.payload?.message
-                state.isLoading = false
-                console.log('deviceTypeSlice error in fetchDeviceType.rejected')
-            })
             // create device type
             .addCase(createDeviceType.pending, state => {
                 state.isLoading = true
                 state.error = null
             })
             .addCase(createDeviceType.fulfilled, (state, { payload }) => {
-                console.log(payload)
                 state.types?.push(payload)
                 state.isLoading = false
                 state.error = null
                 console.log('create device type fulfilled')
             })
-            .addCase(createDeviceType.rejected, (state, action) => {
-                state.error = action.payload?.message
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
+                state.error = action.payload
                 state.isLoading = false
-                console.log(
-                    'deviceTypeSlice error in createDeviceType.rejected',
-                )
             })
     },
 })

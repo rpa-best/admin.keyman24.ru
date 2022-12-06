@@ -1,12 +1,19 @@
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/scss/topNav.scss'
+import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
+import { logout } from '../store/slices/userSlice'
+import SVGNotifications from '../assets/img/topnav/notifications.svg'
+import SVGMessages from '../assets/img/topnav/messages.svg'
+import SVGAvatar from '../assets/img/topnav/avatar.svg'
+import SVGDropdownArrow from '../assets/img/topnav/dropdown-arrow.svg'
 
 const TopNav: FC = () => {
+    const user = useAppSelector(state => state.user.user)
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const handleClick = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('tokenRefresh')
+        dispatch(logout())
         navigate('/login')
     }
 
@@ -19,13 +26,17 @@ const TopNav: FC = () => {
                     {/* <h2>Название системы</h2> */}
                 </div>
                 <div className='tools-wrapper d-flex'>
-                    <input className='search-line' readOnly role='button' value='Купить подписку' onClick={() => handleClick()} />
+                    <input
+                        className='search-line'
+                        readOnly
+                        role='button'
+                        value='Купить подписку'
+                        onClick={() => handleClick()}
+                    />
                     <span className='separator' />
                     <div className='notifications tools-icon'>
                         <a href='/'>
-                            <img
-                                alt='notifications'
-                                src={require('../assets/img/topnav/notifications.svg')}
+                            <SVGNotifications
                                 style={{ height: '24px', width: '22px' }}
                             />
                         </a>
@@ -35,9 +46,7 @@ const TopNav: FC = () => {
                         style={{ marginLeft: '25px' }}
                     >
                         <a href='/'>
-                            <img
-                                alt='messages'
-                                src={require('../assets/img/topnav/messages.svg')}
+                            <SVGMessages
                                 style={{ height: '22px', width: '24px' }}
                             />
                         </a>
@@ -46,26 +55,19 @@ const TopNav: FC = () => {
                     <div className='user-wrapper d-flex'>
                         <div className='avatar tools-icon'>
                             <a href='/'>
-                                <img
-                                    alt='avatar'
-                                    src={require('../assets/img/topnav/avatar.svg')}
-                                    style={{
-                                        height: '40px',
-                                        width: '40px',
-                                    }}
+                                <SVGAvatar
+                                    style={{ height: '40px', width: '40px' }}
                                 />
                             </a>
                         </div>
                         <div className='user d-flex flex-column justify-content-center align-items-center'>
-                            <div className='name'>Иван Иванов</div>
-                            <div className='role'>Директор</div>
+                            <div className='name'>{`${user?.name} ${user?.surname}`}</div>
+                            <div className='role'>{user?.username}</div>
                         </div>
                         <span className='dropdown-arr' />
                         <div className='dropdown-arr tools-icon d-flex align-items-center'>
                             <a href='/'>
-                                <img
-                                    alt='dropdown-arr'
-                                    src={require('../assets/img/topnav/dropdown-arrow.svg')}
+                                <SVGDropdownArrow
                                     style={{ height: '7px', width: '14px' }}
                                 />
                             </a>

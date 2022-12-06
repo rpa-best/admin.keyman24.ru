@@ -3,7 +3,7 @@ import Select from 'react-select/creatable'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
 import { createDevice, fetchDevice } from '../store/slices/deviceSlice'
 import { fetchDeviceType } from '../store/slices/deviceTypeSlice'
-import $api from '../https'
+import $api from '../http'
 
 const Device: FC = () => {
     const dispatch = useAppDispatch()
