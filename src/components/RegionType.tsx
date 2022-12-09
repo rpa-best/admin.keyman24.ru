@@ -1,16 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import {
-    createRegionType,
-    fetchRegionType,
-} from '../store/slices/regionTypeSlice'
+import { regionTypeReducer } from '../store'
 
 const RegionType: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedRegionTypes = useAppSelector(state => state.regionType.types)
+    const fetchedRegionTypes = useAppSelector(state => state.regionType.list)
 
     useEffect(() => {
-        dispatch(fetchRegionType())
+        dispatch(regionTypeReducer.fetch())
     }, [])
 
     const [typeName, setTypeName] = useState('')
@@ -28,11 +25,9 @@ const RegionType: FC = () => {
                 />
                 <button
                     type='button'
-                    onClick={async () => {
-                        await dispatch(
-                            createRegionType(typeName),
-                        )
-                    }}
+                    onClick={() => dispatch(
+                        regionTypeReducer.create({ name: typeName }),
+                    )}
                     className='ms-3 p-3 rounded bg-dark border border-white'
                 >
                     Создать тип региона

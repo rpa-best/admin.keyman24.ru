@@ -10,6 +10,11 @@ import Device from './components/Device'
 import DeviceType from './components/DeviceType'
 import Region from './components/Region'
 import RegionType from './components/RegionType'
+import InventoryType from './components/InventoryType'
+import Permission from './components/Permission'
+import PermissionGroup from './components/PermissionGroup'
+import PermissionLevel from './components/PermissionLevel'
+import SystemMessage from './components/SystemMessage'
 
 const App: FC = () => {
     return (
@@ -26,6 +31,11 @@ const App: FC = () => {
                         <Route path='/device-type' element={<DeviceType />} />
                         <Route path='/region' element={<Region />} />
                         <Route path='/region-type' element={<RegionType />} />
+                        <Route path='/inventory-type' element={<InventoryType />} />
+                        <Route path='/permission' element={<Permission />} />
+                        <Route path='/permission-group' element={<PermissionGroup />} />
+                        <Route path='/permission-level' element={<PermissionLevel />} />
+                        <Route path='/system-message' element={<SystemMessage />} />
                     </Route>
                 </Route>
                 <Route path='/login' element={<LoginPage />} />

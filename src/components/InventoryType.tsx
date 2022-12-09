@@ -1,48 +1,49 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { deviceTypeReducer } from '../store'
+import { inventoryTypeReducer } from '../store'
 
-const DeviceType: FC = () => {
+const InventoryType: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedDeviceTypes = useAppSelector(state => state.deviceType.list)
+    const fetchedInventoryTypes = useAppSelector(state => state.inventoryType.list)
 
     useEffect(() => {
-        dispatch(deviceTypeReducer.fetch())
+        dispatch(inventoryTypeReducer.fetch())
     }, [])
 
     const [typeName, setTypeName] = useState('')
     const [typeSlug, setTypeSlug] = useState('')
     return (
         <>
-            <h1 className='h1'>Тип устройства</h1>
+            <h1 className='h1'>Тип инвентаря</h1>
             <div className='d-flex mt-3'>
                 <input
                     type='text'
                     value={typeName}
                     onChange={e => setTypeName(e.target.value)}
-                    placeholder='имя устройства'
+                    placeholder='имя инвентаря'
                     className='p-3 rounded bg-dark border border-white'
                 />
                 <input
                     type='text'
                     value={typeSlug}
                     onChange={e => setTypeSlug(e.target.value)}
-                    placeholder='slug устройства'
+                    placeholder='slug инвентаря'
                     className='p-3 rounded bg-dark border border-white'
                 />
                 <button
                     type='button'
                     onClick={() => {
                         dispatch(
-                            deviceTypeReducer.create({
+                            inventoryTypeReducer.create({
                                 name: typeName,
                                 slug: typeSlug,
+                                desc: null,
                             }),
                         )
                     }}
                     className='ms-3 p-3 rounded bg-dark border border-white'
                 >
-                    Создать тип устройства
+                    Создать тип инвентаря
                 </button>
             </div>
             <table className='mt-5'>
@@ -54,7 +55,7 @@ const DeviceType: FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {fetchedDeviceTypes.map(item => {
+                    {fetchedInventoryTypes.map(item => {
                         return (
                             <tr key={Date.now() + item.id}>
                                 <td className='p-3'>{item.id}</td>
@@ -69,4 +70,4 @@ const DeviceType: FC = () => {
     )
 }
 
-export default DeviceType
+export default InventoryType

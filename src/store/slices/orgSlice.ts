@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { isError } from '../../helpers/isError'
+import { isRejected } from '../../helpers/actionsHelper'
 import IOrganization from '../../models/IOrganization'
-import OrgService from '../../services/OrgService'
+import OrgService from '../../services/reduxServices/OrgService'
 
 interface IOrgState {
     org: IOrganization[]
@@ -79,7 +79,7 @@ const orgSlice = createSlice({
                 state.error = null
                 console.log('create org fulfilled')
             })
-            .addMatcher(isError, (state, action: PayloadAction<string>) => {
+            .addMatcher(isRejected, (state, action: PayloadAction<string>) => {
                 state.error = action.payload
                 state.isLoading = false
             })

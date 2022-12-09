@@ -1,18 +1,19 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { createRegion, fetchRegion } from '../store/slices/regionSlice'
-import { fetchRegionType } from '../store/slices/regionTypeSlice'
-import $api from '../http'
+import { regionReducer, regionTypeReducer } from '../store'
 
 const Region: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedRegions = useAppSelector(state => state.region.region)
-    const fetchedRegionTypes = useAppSelector(state => state.regionType.types)
+    // const fetchedRegions = useAppSelector(state => state.region.region)
+    const fetchedRegions = useAppSelector(state => state.region.list)
+    const fetchedRegionTypes = useAppSelector(state => state.regionType.list)
 
     const [regionName, setRegionName] = useState('')
     const [regionStatus, setRegionStatus] = useState<boolean>(false)
-    const [regionParent, setRegionParent] = useState<number | undefined>(undefined)
+    const [regionParent, setRegionParent] = useState<number | undefined>(
+        undefined,
+    )
     const [regionType, setRegionType] = useState<number>(0)
 
     const temp = fetchedRegionTypes.map(item => {
@@ -35,26 +36,14 @@ const Region: FC = () => {
     })
 
     useEffect(() => {
-        dispatch(fetchRegion())
-        dispatch(fetchRegionType())
+        dispatch(regionReducer.fetch())
+        dispatch(regionTypeReducer.fetch())
     }, [])
 
-    const handleRegionStatus = (e: any) => {
-        setRegionStatus(e.value)
-    }
-
-    const handleRegionType = (e: any) => {
-        setRegionType(e.value)
-    }
-
-    const handleRegionParent = (e: any) => {
-        setRegionParent(e.value)
-    }
-
-    const handleCreateRegion = async () => {
+    const handleCreateRegion = () => {
         if (regionName && (regionType !== 0)) {
-            await dispatch(
-                createRegion({
+            dispatch(
+                regionReducer.create({
                     name: regionName,
                     type: regionType,
                     status: regionStatus,
@@ -80,7 +69,9 @@ const Region: FC = () => {
                     placeholder='выберите тип'
                     noOptionsMessage={() => 'name not found'}
                     className='ms-3 align-items-center d-flex'
-                    onChange={handleRegionType}
+                    onChange={(e: any) => {
+                        setRegionType(e.value)
+                    }}
                     required
                 />
                 <Select
@@ -88,7 +79,9 @@ const Region: FC = () => {
                     placeholder='выберите cтатус'
                     noOptionsMessage={() => 'name not found'}
                     className='ms-3 align-items-center d-flex'
-                    onChange={handleRegionStatus}
+                    onChange={(e: any) => {
+                        setRegionStatus(e.value)
+                    }}
                     required
                 />
                 <Select
@@ -96,7 +89,9 @@ const Region: FC = () => {
                     placeholder='выберите родителя'
                     noOptionsMessage={() => 'name not found'}
                     className='ms-3 align-items-center d-flex'
-                    onChange={handleRegionParent}
+                    onChange={(e: any) => {
+                        setRegionParent(e.value)
+                    }}
                 />
                 <button
                     type='button'
@@ -122,7 +117,9 @@ const Region: FC = () => {
                             <tr key={Date.now() + item.id}>
                                 <td className='p-3'>{item.id}</td>
                                 <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.status.toString()}</td>
+                                <td className='p-3'>
+                                    {item.status.toString()}
+                                </td>
                                 <td className='p-3'>{item.type.name}</td>
                                 <td className='p-3'>{item.parent?.id}</td>
                             </tr>

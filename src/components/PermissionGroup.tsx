@@ -1,48 +1,48 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { deviceTypeReducer } from '../store'
+import { permissionGroupReducer } from '../store'
 
-const DeviceType: FC = () => {
+const PermissionGroup: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedDeviceTypes = useAppSelector(state => state.deviceType.list)
+    const fetchedPermissionGroups = useAppSelector(state => state.permissionGroup.list)
 
     useEffect(() => {
-        dispatch(deviceTypeReducer.fetch())
+        dispatch(permissionGroupReducer.fetch())
     }, [])
 
-    const [typeName, setTypeName] = useState('')
-    const [typeSlug, setTypeSlug] = useState('')
+    const [permName, setTypeName] = useState('')
+    const [permLevel, setTypeLevel] = useState(0)
     return (
         <>
-            <h1 className='h1'>Тип устройства</h1>
+            <h1 className='h1'>Группа Права доступа</h1>
             <div className='d-flex mt-3'>
                 <input
                     type='text'
-                    value={typeName}
+                    value={permName}
                     onChange={e => setTypeName(e.target.value)}
-                    placeholder='имя устройства'
+                    placeholder='имя права доступа'
                     className='p-3 rounded bg-dark border border-white'
                 />
                 <input
-                    type='text'
-                    value={typeSlug}
-                    onChange={e => setTypeSlug(e.target.value)}
-                    placeholder='slug устройства'
+                    type='number'
+                    value={permLevel}
+                    onChange={e => setTypeLevel(Number(e.target.value))}
+                    placeholder='уровень права доступа'
                     className='p-3 rounded bg-dark border border-white'
                 />
                 <button
                     type='button'
                     onClick={() => {
                         dispatch(
-                            deviceTypeReducer.create({
-                                name: typeName,
-                                slug: typeSlug,
+                            permissionGroupReducer.create({
+                                name: permName,
+                                level: permLevel,
                             }),
                         )
                     }}
                     className='ms-3 p-3 rounded bg-dark border border-white'
                 >
-                    Создать тип устройства
+                    Создать группу права доступа
                 </button>
             </div>
             <table className='mt-5'>
@@ -50,16 +50,16 @@ const DeviceType: FC = () => {
                     <tr>
                         <td className='p-3'>id</td>
                         <td className='p-3'>имя</td>
-                        <td className='p-3'>slug</td>
+                        <td className='p-3'>уровень</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {fetchedDeviceTypes.map(item => {
+                    {fetchedPermissionGroups.map(item => {
                         return (
                             <tr key={Date.now() + item.id}>
                                 <td className='p-3'>{item.id}</td>
                                 <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.slug}</td>
+                                <td className='p-3'>{item.level}</td>
                             </tr>
                         )
                     })}
@@ -69,4 +69,4 @@ const DeviceType: FC = () => {
     )
 }
 
-export default DeviceType
+export default PermissionGroup

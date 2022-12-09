@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
-import $api from '../http'
-import AuthResponse from '../models/AuthResponse'
-import IAccountDetail from '../models/IAccountDetail'
+import $api from '../../http'
+import AuthResponse from '../../models/AuthResponse'
+import IAccountDetail from '../../models/IAccountDetail'
 
 export default class AccountService {
     static async auth(

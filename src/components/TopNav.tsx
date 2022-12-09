@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import '../assets/styles/scss/topNav.scss'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
 import { logout } from '../store/slices/userSlice'
@@ -21,7 +21,9 @@ const TopNav: FC = () => {
         <div className='topnav-wrapper d-flex'>
             <div className='topnav d-flex w-100 justify-content-between'>
                 <div className='title-wrapper d-flex'>
-                    <h1>KeyMan24</h1>
+                    <Link to='/'>
+                        <h1>KeyMan24</h1>
+                    </Link>
                     {/* <span className='separator' /> */}
                     {/* <h2>Название системы</h2> */}
                 </div>
@@ -30,7 +32,7 @@ const TopNav: FC = () => {
                         className='search-line'
                         readOnly
                         role='button'
-                        value='Купить подписку'
+                        value='Выйти'
                         onClick={() => handleClick()}
                     />
                     <span className='separator' />

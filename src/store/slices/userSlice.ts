@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import AuthResponse from '../../models/AuthResponse'
 import IAccountDetail from '../../models/IAccountDetail'
-import IUser from '../../models/IUser'
-import AccountService from '../../services/AccountService'
+import AccountService from '../../services/reduxServices/AccountService'
 
 interface IUserState {
     user: IAccountDetail | null
@@ -63,23 +62,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setAuth: (state, action) => {
-            state.isAuth = action.payload.isAuth
-        },
-        setLoading: (state, action) => {
-            state.isLoading = action.payload.isLoading
-        },
-        setUser: (state, action: PayloadAction<IUser>) => {
-            // state.user = {
-            //     username: action.payload.username,
-            //     name: null,
-            //     lastname: null,
-            //     surname: null,
-            //     phone: null,
-            //     gender: null,
-            //     birthday: null,
-            // }
-        },
         logout: () => {
             localStorage.removeItem('token')
             localStorage.removeItem('tokenRefresh')
@@ -127,6 +109,6 @@ const userSlice = createSlice({
     },
 })
 
-export const { setUser, logout } = userSlice.actions
+export const { logout } = userSlice.actions
 
 export default userSlice.reducer

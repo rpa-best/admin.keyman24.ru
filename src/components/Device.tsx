@@ -1,14 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
 import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { createDevice, fetchDevice } from '../store/slices/deviceSlice'
-import { fetchDeviceType } from '../store/slices/deviceTypeSlice'
+import { deviceReducer, deviceTypeReducer } from '../store'
 import $api from '../http'
 
 const Device: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedDevices = useAppSelector(state => state.device.device)
-    const fetchedDeviceTypes = useAppSelector(state => state.deviceType.types)
+    const fetchedDevices = useAppSelector(state => state.device.list)
+    const fetchedDeviceTypes = useAppSelector(state => state.deviceType.list)
     const [deviceName, setDeviceName] = useState('')
     const [deviceType, setDeviceType] = useState('')
 
@@ -20,8 +19,8 @@ const Device: FC = () => {
     })
 
     useEffect(() => {
-        dispatch(fetchDevice())
-        dispatch(fetchDeviceType())
+        dispatch(deviceReducer.fetch())
+        dispatch(deviceTypeReducer.fetch())
     }, [])
 
     const changeHandler = (e: any) => {
@@ -56,9 +55,9 @@ const Device: FC = () => {
                 />
                 <button
                     type='button'
-                    onClick={async () => {
-                        await dispatch(
-                            createDevice({
+                    onClick={() => {
+                        dispatch(
+                            deviceReducer.create({
                                 name: deviceName,
                                 type: deviceType,
                             }),

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development SERVE=true webpack serve --config webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "lint": "eslint -c .eslintrc --ext .js,.jsx .",
+    "lint": "eslint -c .eslintrc --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "npm run lint -- --fix",
     "clean": "rm -R dist"
   },

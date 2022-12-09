@@ -27,6 +27,10 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: inherit;}
     src: local('Montserrat-Bold'), url('../../fonts/Montserrat/Montserrat-Bold.ttf') format('truetype');
 }
 @font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: local('Montserrat-SemiBold'), url('../../fonts/Montserrat/Montserrat-SemiBold.ttf') format('truetype');
+}
+@font-face {
     font-family: 'Montserrat-Medium';
     src: local('Montserrat-Medium'), url('../../fonts/Montserrat/Montserrat-Medium.ttf') format('truetype');
 }
