@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import ReducerService from '../services/ReducerService'
-import * as Region from '../models/region'
 import * as Device from '../models/device'
+import * as Organization from '../models/organization'
 import * as Permission from '../models/permission'
+import * as Region from '../models/region'
 import * as SystemMessage from '../models/systemMessage'
-import { IInventoryType, IInventoryTypeInput } from '../models/inventoryType'
+import * as InventoryType from '../models/inventoryType'
 import ApiService from '../services/ApiService'
-import orgReducer from './slices/orgSlice'
+import guestWorkerReducer from './slices/guestWorkerSlice'
 import userReducer from './slices/userSlice'
 
 export const deviceReducer = new ReducerService<
@@ -29,33 +30,23 @@ export const deviceTypeReducer = new ReducerService<
     }),
 })
 
-export const regionReducer = new ReducerService<
-    Region.IRegion,
-    Region.IRegionInput
->({
-    name: 'region',
-    service: new ApiService<Region.IRegion, Region.IRegionInput>({
-        endpoint: 'admin/region/',
-    }),
-})
-
-export const regionTypeReducer = new ReducerService<
-    Region.IRegionType,
-    Region.IRegionTypeInput
->({
-    name: 'regionType',
-    service: new ApiService<Region.IRegionType, Region.IRegionTypeInput>({
-        endpoint: 'admin/region/type/',
-    }),
-})
-
 export const inventoryTypeReducer = new ReducerService<
-    IInventoryType,
-    IInventoryTypeInput
+    InventoryType.IInventoryType,
+    InventoryType.IInventoryTypeInput
 >({
     name: 'inventoryType',
-    service: new ApiService<IInventoryType, IInventoryTypeInput>({
+    service: new ApiService<InventoryType.IInventoryType, InventoryType.IInventoryTypeInput>({
         endpoint: 'admin/inventory-type/',
+    }),
+})
+
+export const organizationReducer = new ReducerService<
+    Organization.IOrganization,
+    Organization.IOrganizationInput
+>({
+    name: 'organization',
+    service: new ApiService<Organization.IOrganization, Organization.IOrganizationInput>({
+        endpoint: 'admin/org/',
     }),
 })
 
@@ -98,6 +89,26 @@ export const permissionLevelReducer = new ReducerService<
     }),
 })
 
+export const regionReducer = new ReducerService<
+    Region.IRegion,
+    Region.IRegionInput
+>({
+    name: 'region',
+    service: new ApiService<Region.IRegion, Region.IRegionInput>({
+        endpoint: 'admin/region/',
+    }),
+})
+
+export const regionTypeReducer = new ReducerService<
+    Region.IRegionType,
+    Region.IRegionTypeInput
+>({
+    name: 'regionType',
+    service: new ApiService<Region.IRegionType, Region.IRegionTypeInput>({
+        endpoint: 'admin/region/type/',
+    }),
+})
+
 export const systemMessageReducer = new ReducerService<
     SystemMessage.ISystemMessage,
     SystemMessage.ISystemMessageInput
@@ -114,15 +125,16 @@ export const systemMessageReducer = new ReducerService<
 export const store = configureStore({
     reducer: {
         user: userReducer,
-        org: orgReducer,
+        guestWorker: guestWorkerReducer,
         device: deviceReducer.slice().reducer,
         deviceType: deviceTypeReducer.slice().reducer,
-        region: regionReducer.slice().reducer,
-        regionType: regionTypeReducer.slice().reducer,
         inventoryType: inventoryTypeReducer.slice().reducer,
+        organization: organizationReducer.slice().reducer,
         permission: permissionReducer.slice().reducer,
         permissionGroup: permissionGroupReducer.slice().reducer,
         permissionLevel: permissionLevelReducer.slice().reducer,
+        region: regionReducer.slice().reducer,
+        regionType: regionTypeReducer.slice().reducer,
         systemMessage: systemMessageReducer.slice().reducer,
     },
 })

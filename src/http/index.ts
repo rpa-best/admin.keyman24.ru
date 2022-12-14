@@ -40,11 +40,12 @@ $api.interceptors.response.use(
                 localStorage.setItem('tokenRefresh', response.data.refresh)
                 return $api.request(originalRequest)
             } catch (e) {
-                console.log('no auth')
+                console.log(e)
             }
         }
-        throw error
+        // console.log(error)
         // return error
+        throw error
     },
 )
 

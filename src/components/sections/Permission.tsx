@@ -1,18 +1,26 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { permissionReducer } from '../store'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { permissionReducer } from '../../store'
+import Table from '../Table'
+import { permission } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const Permission: FC = () => {
     const dispatch = useAppDispatch()
     const fetchedPermissions = useAppSelector(state => state.permission.list)
 
+    const rowsLength = useAppSelector(state => state.permission.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
+
     useEffect(() => {
-        dispatch(permissionReducer.fetch())
-    }, [])
+        dispatch(permissionReducer.fetchWithOffset(currentOffset(currentPage)))
+    }, [currentPage])
 
     const [permName, setTypeName] = useState('')
     const [permSlug, setTypeSlug] = useState('')
     const [permLevel, setTypeLevel] = useState(0)
+
     return (
         <>
             <h1 className='h1'>Права доступа</h1>
@@ -54,28 +62,15 @@ const Permission: FC = () => {
                     Создать право доступа
                 </button>
             </div>
-            <table className='mt-5'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                        <td className='p-3'>slug</td>
-                        <td className='p-3'>уровень</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedPermissions.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.slug}</td>
-                                <td className='p-3'>{item.level}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={permission}
+                data={fetchedPermissions}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

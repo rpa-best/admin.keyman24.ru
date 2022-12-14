@@ -1,7 +1,7 @@
 import AccountService from './AccountService'
-import OrgService from './OrgService'
+import GuestWorkerService from './GuestWorkerService'
 
 export default {
     AccountService,
-    OrgService,
+    GuestWorkerService,
 }

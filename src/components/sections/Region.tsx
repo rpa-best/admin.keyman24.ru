@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { regionReducer, regionTypeReducer } from '../store'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { regionReducer, regionTypeReducer } from '../../store'
+import Table from '../Table'
+import { region } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const Region: FC = () => {
     const dispatch = useAppDispatch()
-    // const fetchedRegions = useAppSelector(state => state.region.region)
     const fetchedRegions = useAppSelector(state => state.region.list)
     const fetchedRegionTypes = useAppSelector(state => state.regionType.list)
 
@@ -35,10 +37,14 @@ const Region: FC = () => {
         }
     })
 
+    const rowsLength = useAppSelector(state => state.region.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
+
     useEffect(() => {
-        dispatch(regionReducer.fetch())
+        dispatch(regionReducer.fetchWithOffset(currentOffset(currentPage)))
         dispatch(regionTypeReducer.fetch())
-    }, [])
+    }, [currentPage])
 
     const handleCreateRegion = () => {
         if (regionName && (regionType !== 0)) {
@@ -101,32 +107,15 @@ const Region: FC = () => {
                     Создать Регион
                 </button>
             </div>
-            <table className='mt-3'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                        <td className='p-3'>статус</td>
-                        <td className='p-3'>имя типа</td>
-                        <td className='p-3'>id родителя</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedRegions.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>
-                                    {item.status.toString()}
-                                </td>
-                                <td className='p-3'>{item.type.name}</td>
-                                <td className='p-3'>{item.parent?.id}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={region}
+                data={fetchedRegions}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

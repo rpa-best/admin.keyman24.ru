@@ -1,15 +1,22 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { systemMessageReducer } from '../store'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { systemMessageReducer } from '../../store'
+import Table from '../Table'
+import { systemMessage } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const SystemMessage: FC = () => {
     const dispatch = useAppDispatch()
     const fetchedSystemMessages = useAppSelector(state => state.systemMessage.list)
 
+    const rowsLength = useAppSelector(state => state.systemMessage.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
+
     useEffect(() => {
-        dispatch(systemMessageReducer.fetch())
-    }, [])
+        dispatch(systemMessageReducer.fetchWithOffset(currentOffset(currentPage)))
+    }, [currentPage])
 
     const [sysMesName, setTypeName] = useState('')
     const [sysMesSlug, setTypeSlug] = useState('')
@@ -74,30 +81,15 @@ const SystemMessage: FC = () => {
                     Создать сообщение
                 </button>
             </div>
-            <table className='mt-5'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                        <td className='p-3'>slug</td>
-                        <td className='p-3'>тип</td>
-                        <td className='p-3'>описание</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedSystemMessages.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.slug}</td>
-                                <td className='p-3'>{item.type}</td>
-                                <td className='p-3'>{item.desc}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={systemMessage}
+                data={fetchedSystemMessages}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

@@ -5,16 +5,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import './assets/styles/scss/app.scss'
 import PrivateRoute from './utils/PrivateRoute'
-import Organization from './components/Organization'
-import Device from './components/Device'
-import DeviceType from './components/DeviceType'
-import Region from './components/Region'
-import RegionType from './components/RegionType'
-import InventoryType from './components/InventoryType'
-import Permission from './components/Permission'
-import PermissionGroup from './components/PermissionGroup'
-import PermissionLevel from './components/PermissionLevel'
-import SystemMessage from './components/SystemMessage'
+import Sections from './components/sections'
 
 const App: FC = () => {
     return (
@@ -26,16 +17,16 @@ const App: FC = () => {
                             index
                             element={<h1 className='h1'>Main Page</h1>}
                         />
-                        <Route path='/org' element={<Organization />} />
-                        <Route path='/device' element={<Device />} />
-                        <Route path='/device-type' element={<DeviceType />} />
-                        <Route path='/region' element={<Region />} />
-                        <Route path='/region-type' element={<RegionType />} />
-                        <Route path='/inventory-type' element={<InventoryType />} />
-                        <Route path='/permission' element={<Permission />} />
-                        <Route path='/permission-group' element={<PermissionGroup />} />
-                        <Route path='/permission-level' element={<PermissionLevel />} />
-                        <Route path='/system-message' element={<SystemMessage />} />
+                        <Route path='/org' element={<Sections.Organization />} />
+                        <Route path='/device' element={<Sections.Device />} />
+                        <Route path='/device-type' element={<Sections.DeviceType />} />
+                        <Route path='/region' element={<Sections.Region />} />
+                        <Route path='/region-type' element={<Sections.RegionType />} />
+                        <Route path='/inventory-type' element={<Sections.InventoryType />} />
+                        <Route path='/permission' element={<Sections.Permission />} />
+                        <Route path='/permission-group' element={<Sections.PermissionGroup />} />
+                        <Route path='/permission-level' element={<Sections.PermissionLevel />} />
+                        <Route path='/system-message' element={<Sections.SystemMessage />} />
                     </Route>
                 </Route>
                 <Route path='/login' element={<LoginPage />} />

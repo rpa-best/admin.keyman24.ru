@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { deviceReducer, deviceTypeReducer } from '../store'
-import $api from '../http'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { deviceReducer, deviceTypeReducer } from '../../store'
+import Table from '../Table'
+import { device } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const Device: FC = () => {
     const dispatch = useAppDispatch()
@@ -10,6 +12,10 @@ const Device: FC = () => {
     const fetchedDeviceTypes = useAppSelector(state => state.deviceType.list)
     const [deviceName, setDeviceName] = useState('')
     const [deviceType, setDeviceType] = useState('')
+
+    const rowsLength = useAppSelector(state => state.device.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
 
     const temp = fetchedDeviceTypes.map(item => {
         return {
@@ -19,21 +25,21 @@ const Device: FC = () => {
     })
 
     useEffect(() => {
-        dispatch(deviceReducer.fetch())
+        dispatch(deviceReducer.fetchWithOffset(currentOffset(currentPage)))
         dispatch(deviceTypeReducer.fetch())
-    }, [])
+    }, [currentPage])
 
     const changeHandler = (e: any) => {
         setDeviceType(e.value)
     }
 
-    const handleShowToken = (id: number) => {
-        $api.get(`admin/device/${id}/token/`).then(res => {
-            if (res.status === 200) {
-                alert(res.data.token)
-            }
-        })
-    }
+    // const handleShowToken = (id: number) => {
+    //     $api.get(`admin/device/${id}/token/`).then(res => {
+    //         if (res.status === 200) {
+    //             alert(res.data.token)
+    //         }
+    //     })
+    // }
 
     return (
         <>
@@ -68,38 +74,15 @@ const Device: FC = () => {
                     Создать Устройство
                 </button>
             </div>
-            <table className='mt-3'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                        <td className='p-3'>тип</td>
-                        <td className='p-3'>описание</td>
-                        <td className='p-3' />
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedDevices.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.type}</td>
-                                <td className='p-3'>{item.desc}</td>
-                                <td className='p-3'>
-                                    <button
-                                        type='button'
-                                        className='p-3 rounded bg-dark border border-white'
-                                        onClick={() => handleShowToken(item.id)}
-                                    >
-                                        Показать токен
-                                    </button>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={device}
+                data={fetchedDevices}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

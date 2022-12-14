@@ -1,14 +1,21 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { regionTypeReducer } from '../store'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { regionTypeReducer } from '../../store'
+import Table from '../Table'
+import { regionType } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const RegionType: FC = () => {
     const dispatch = useAppDispatch()
     const fetchedRegionTypes = useAppSelector(state => state.regionType.list)
 
+    const rowsLength = useAppSelector(state => state.regionType.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
+
     useEffect(() => {
-        dispatch(regionTypeReducer.fetch())
-    }, [])
+        dispatch(regionTypeReducer.fetchWithOffset(currentOffset(currentPage)))
+    }, [currentPage])
 
     const [typeName, setTypeName] = useState('')
 
@@ -33,24 +40,15 @@ const RegionType: FC = () => {
                     Создать тип региона
                 </button>
             </div>
-            <table className='mt-5'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedRegionTypes.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={regionType}
+                data={fetchedRegionTypes}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

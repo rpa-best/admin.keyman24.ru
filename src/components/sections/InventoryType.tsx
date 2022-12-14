@@ -1,17 +1,25 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
-import { inventoryTypeReducer } from '../store'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { inventoryTypeReducer } from '../../store'
+import Table from '../Table'
+import { inventoryType } from '../../config/tableHeaders'
+import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 
 const InventoryType: FC = () => {
     const dispatch = useAppDispatch()
     const fetchedInventoryTypes = useAppSelector(state => state.inventoryType.list)
 
+    const rowsLength = useAppSelector(state => state.inventoryType.count)
+    const pagesCount = pagesLength(rowsLength)
+    const [currentPage, setPage] = useState(1)
+
     useEffect(() => {
-        dispatch(inventoryTypeReducer.fetch())
-    }, [])
+        dispatch(inventoryTypeReducer.fetchWithOffset(currentOffset(currentPage)))
+    }, [currentPage])
 
     const [typeName, setTypeName] = useState('')
     const [typeSlug, setTypeSlug] = useState('')
+
     return (
         <>
             <h1 className='h1'>Тип инвентаря</h1>
@@ -46,26 +54,15 @@ const InventoryType: FC = () => {
                     Создать тип инвентаря
                 </button>
             </div>
-            <table className='mt-5'>
-                <thead>
-                    <tr>
-                        <td className='p-3'>id</td>
-                        <td className='p-3'>имя</td>
-                        <td className='p-3'>slug</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {fetchedInventoryTypes.map(item => {
-                        return (
-                            <tr key={Date.now() + item.id}>
-                                <td className='p-3'>{item.id}</td>
-                                <td className='p-3'>{item.name}</td>
-                                <td className='p-3'>{item.slug}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Table
+                columns={inventoryType}
+                data={fetchedInventoryTypes}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+                handleSetPage={(value: number) => {
+                    setPage(value)
+                }}
+            />
         </>
     )
 }

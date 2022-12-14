@@ -7,7 +7,8 @@
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
-    background: rgb(34, 34, 34);
+    background: $black2;
+    overflow-x: auto;
 }
 
 * {

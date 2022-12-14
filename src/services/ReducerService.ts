@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { isRejected, isPending } from '../helpers/actionsHelper'
 import IService from '../models/IService'
-import thunks from './AsyncThunksService'
+import thunks from './AsyncThunkService'
 
 export interface ReducerServiceProps {
     name: string
@@ -19,6 +19,7 @@ export default class RegionService<Model, CreateInput> {
 
     initialState: {
         list: Model[]
+        count: number
         isLoading: boolean
         error: string | null
     }
@@ -29,27 +30,24 @@ export default class RegionService<Model, CreateInput> {
 
         this.initialState = {
             list: [],
+            count: 0,
             isLoading: false,
             error: null,
         }
     }
 
     fetch() {
-        const callAction = thunks.fetchThunk(
-            this.model,
-            this.name,
-            this.service,
-        )
+        const callAction = thunks.fetchThunk(this.name, this.service)
         return callAction()
     }
 
+    fetchWithOffset(offset: number) {
+        const callAction = thunks.fetchWithOffsetThunk(this.name, this.service)
+        return callAction(offset)
+    }
+
     create(data: typeof this.createInput) {
-        const callAction = thunks.createThunk(
-            this.model,
-            this.createInput,
-            this.name,
-            this.service,
-        )
+        const callAction = thunks.createThunk(this.name, this.service)
         return callAction(data)
     }
 
@@ -61,24 +59,30 @@ export default class RegionService<Model, CreateInput> {
             extraReducers: builder => {
                 builder
                     .addCase(
-                        thunks.fetchThunk(this.model, this.name, this.service)
-                            .fulfilled,
+                        thunks.fetchThunk(this.name, this.service).fulfilled,
                         (state, { payload }) => {
-                            state.list = payload
+                            state.list = payload.results
+                            state.count = payload.count
                             state.isLoading = false
                             state.error = null
                             console.log(`fetch ${this.name} fulfilled`)
                         },
                     )
                     .addCase(
-                        thunks.createThunk(
-                            this.model,
-                            this.createInput,
-                            this.name,
-                            this.service,
-                        ).fulfilled,
+                        thunks.fetchWithOffsetThunk(this.name, this.service).fulfilled,
+                        (state, { payload }) => {
+                            state.list = payload.results
+                            state.count = payload.count
+                            state.isLoading = false
+                            state.error = null
+                            console.log(`fetchWithOffset ${this.name} fulfilled`)
+                        },
+                    )
+                    .addCase(
+                        thunks.createThunk(this.name, this.service).fulfilled,
                         (state, { payload }) => {
                             state.list?.push(payload)
+                            state.count += 1
                             state.isLoading = false
                             state.error = null
                             console.log(`create ${this.name} fulfilled`)
