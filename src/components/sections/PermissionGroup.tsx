@@ -1,20 +1,26 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { permissionGroupReducer } from '../../store'
 import Table from '../Table'
 import { permissionGroup } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Input from '../Input'
+import Button from '../Button'
 
 const PermissionGroup: FC = () => {
     const dispatch = useAppDispatch()
-    const fetchedPermissionGroups = useAppSelector(state => state.permissionGroup.list)
+    const fetchedPermissionGroups = useAppSelector(
+        state => state.permissionGroup.list,
+    )
 
     const rowsLength = useAppSelector(state => state.permissionGroup.count)
     const pagesCount = pagesLength(rowsLength)
     const [currentPage, setPage] = useState(1)
 
     useEffect(() => {
-        dispatch(permissionGroupReducer.fetchWithOffset(currentOffset(currentPage)))
+        dispatch(
+            permissionGroupReducer.fetchWithOffset(currentOffset(currentPage)),
+        )
     }, [currentPage])
 
     const [permName, setTypeName] = useState('')
@@ -22,25 +28,21 @@ const PermissionGroup: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Группа Права доступа</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Группа Права доступа</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={permName}
-                    onChange={e => setTypeName(e.target.value)}
+                <Input
                     placeholder='имя права доступа'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={permName}
+                    onChange={e => setTypeName(e)}
                 />
-                <input
-                    type='number'
-                    value={permLevel}
-                    onChange={e => setTypeLevel(Number(e.target.value))}
+                <Input
                     placeholder='уровень права доступа'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={permLevel}
+                    onChange={e => setTypeLevel(Number(e))}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать группу права доступа'
+                    handleClick={() => {
                         dispatch(
                             permissionGroupReducer.create({
                                 name: permName,
@@ -48,10 +50,7 @@ const PermissionGroup: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать группу права доступа
-                </button>
+                />
             </div>
             <Table
                 columns={permissionGroup}

@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { regionTypeReducer } from '../../store'
 import Table from '../Table'
 import { regionType } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Input from '../Input'
+import Button from '../Button'
 
 const RegionType: FC = () => {
     const dispatch = useAppDispatch()
@@ -21,24 +23,21 @@ const RegionType: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Тип региона</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Тип региона</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={typeName}
-                    onChange={e => setTypeName(e.target.value)}
+                <Input
                     placeholder='имя региона'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={typeName}
+                    onChange={e => setTypeName(e)}
                 />
-                <button
-                    type='button'
-                    onClick={() => dispatch(
-                        regionTypeReducer.create({ name: typeName }),
-                    )}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать тип региона
-                </button>
+                <Button
+                    title='Создать тип региона'
+                    handleClick={() => {
+                        dispatch(
+                            regionTypeReducer.create({ name: typeName }),
+                        )
+                    }}
+                />
             </div>
             <Table
                 columns={regionType}

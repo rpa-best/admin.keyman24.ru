@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { isRejected, isPending } from '../../helpers/actionsHelper'
 import { IGuestWorker, IGuestWorkerInput } from '../../models/guestWorker'
-import IOrganization from '../../models/IOrganization'
 import GuestWorkerService from '../../services/reduxServices/GuestWorkerService'
 
 interface IGuestWorkerState {

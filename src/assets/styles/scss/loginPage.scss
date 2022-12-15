@@ -1,7 +1,7 @@
 @import 'default';
 
 .login-wrapper {
-    background: #fff;
+    background: var(--background-color);
     position: relative;
     overflow: hidden;
     .circle {
@@ -43,12 +43,12 @@
     font-weight: 800;
     font-size: 24px;
     line-height: 29px;
-    color: $blackExtra;
+    color: var(--text-color-my);
 }
 
 .preview-wrapper {
     display: flex;
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--background-login-color);
     backdrop-filter: blur(20px);
 }
 
@@ -62,7 +62,7 @@
         font-size: 72px;
         line-height: 110%;
         letter-spacing: -0.04em;
-        color: $blackExtra;
+        color: var(--text-color-my);
     }
     span {
         display: flex;
@@ -73,7 +73,7 @@
         font-size: 20px;
         line-height: 160%;
         letter-spacing: -0.03em;
-        color: $blackExtra;
+        color: var(--text-color-my);
     }
 }
 
@@ -92,7 +92,7 @@
 
 .form-content {
     padding: 55px;
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--background-login-color);
     backdrop-filter: blur(20px);
     border-radius: 30px;
     width: 510px;
@@ -103,7 +103,7 @@
         font-size: 30px;
         line-height: 140%;
         letter-spacing: -0.02em;
-        color: $blackExtra;
+        color: var(--text-color-my);
     }
     input {
         background: #fff;
@@ -115,7 +115,7 @@
         font-size: 16px;
         line-height: 145%;
         letter-spacing: -0.01em;
-        color: $gray;
+        color: #000;
         &::-webkit-input-placeholder {
             /* WebKit browsers */
             color: $gray;

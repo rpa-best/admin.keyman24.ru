@@ -1,25 +1,35 @@
-$black: #2D2D2D;
+$black: #2d2d2d;
 $black2: #434343;
-$green: #31D79B;
-$gray: #A1A1A1;
-$border: #5E5E5E;
-$circle-bg: linear-gradient(180deg, #516FA5 0%, #31D79B 100%);
+$green: #31d79b;
+$gray: #a1a1a1;
+$border: #5e5e5e;
+$circle-bg: linear-gradient(180deg, #516fa5 0%, #31d79b 100%);
 
 // colors dark mode
 $blackExtra: #414141;
 
-// fix this
-// default white
-$white: #fff;
+html[data-theme='dark'] {
+    --background-color: #434343;
+    --background-color-2: #2d2d2d;
+    --background-login-color: rgba(0, 0, 0, 0.3);
+    --border-color: #5e5e5e;
+    --border-table-color: #a1a1a1;
+    --text-color-my: #fff;
+    --text-color-active: #fff;
+    --text-color-inactive: #a1a1a1;
+    --text-color-inversion: #000;
+    --marker-link-color: var(--background-color-2);
+}
 
-// main background hover
-$whiteHover: rgb(243, 241, 241);
-
-// text grey
-$textGrey: rgb(107, 114, 128);
-
-// text light grey
-$textLightGrey: #9CA3AF;
-
-// text light grey 2
-$textLightGrey2: #D1D5DB;
+html[data-theme='light'] {
+    --background-color: #fff;
+    --background-color-2: #f7f7f7;
+    --background-login-color: rgba(0, 0, 0, 0.03);
+    --border-color: #e9e9e9;
+    --border-table-color: #e9e9e9;
+    --text-color-my: #2d2d2d;
+    --text-color-active: #000;
+    --text-color-inactive: #a1a1a1;
+    --text-color-inversion: #fff;
+    --marker-link-color: var(--background-color-2);
+}

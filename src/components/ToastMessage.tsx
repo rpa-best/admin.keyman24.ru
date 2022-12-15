@@ -2,19 +2,17 @@
 import React, { FC } from 'react'
 
 interface IToastMessageProps {
-    text1: string
-    text2: string
-    text3: string
+    name: string
+    desc: string
 }
 
 const ToastMessage: FC<IToastMessageProps> = (props: IToastMessageProps) => {
-    const { text1, text2, text3 } = { ...props }
+    const { name, desc } = { ...props }
 
     return (
-        <div style={{ width: '300px' }}>
-            <h1 style={{ fontSize: '20px', color: '#000' }}>{text1}</h1>
-            <p style={{ color: '#000' }}>{text2}</p>
-            <p style={{ color: '#000' }}>{text3}</p>
+        <div style={{ height: '80px' }} className='d-flex flex-column justify-content-center'>
+            <h1 style={{ fontSize: '22px', color: '#000' }}>{name}</h1>
+            <p style={{ fontSize: '16px', color: '#000' }}>{desc}</p>
         </div>
     )
 }

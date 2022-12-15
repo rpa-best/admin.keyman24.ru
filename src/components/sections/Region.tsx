@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { regionReducer, regionTypeReducer } from '../../store'
 import Table from '../Table'
 import { region } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import { selectStyles, themeUnset } from '../../config/selectStyles'
+import Input from '../Input'
+import Button from '../Button'
 
 const Region: FC = () => {
     const dispatch = useAppDispatch()
@@ -61,51 +64,52 @@ const Region: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Регион</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Регион</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={regionName}
-                    onChange={e => setRegionName(e.target.value)}
+                <Input
                     placeholder='имя региона'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={regionName}
+                    onChange={e => setRegionName(e)}
                 />
                 <Select
                     options={temp}
                     placeholder='выберите тип'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
+                    className='ms-3'
+                    styles={selectStyles}
                     onChange={(e: any) => {
                         setRegionType(e.value)
                     }}
-                    required
+                    theme={theme => themeUnset(theme)}
                 />
                 <Select
                     options={temp2}
                     placeholder='выберите cтатус'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
+                    className='ms-3'
+                    styles={selectStyles}
                     onChange={(e: any) => {
                         setRegionStatus(e.value)
                     }}
-                    required
+                    theme={theme => themeUnset(theme)}
                 />
                 <Select
                     options={temp3}
                     placeholder='выберите родителя'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
+                    className='ms-3'
+                    styles={selectStyles}
                     onChange={(e: any) => {
                         setRegionParent(e.value)
                     }}
+                    theme={theme => themeUnset(theme)}
                 />
-                <button
-                    type='button'
-                    onClick={() => handleCreateRegion()}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать Регион
-                </button>
+                <Button
+                    title='Создать Регион'
+                    handleClick={() => {
+                        handleCreateRegion()
+                    }}
+                />
             </div>
             <Table
                 columns={region}

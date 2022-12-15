@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { deviceTypeReducer } from '../../store'
 import Table from '../Table'
 import { deviceType } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Input from '../Input'
+import Button from '../Button'
 
 const DeviceType: FC = () => {
     const dispatch = useAppDispatch()
@@ -22,25 +24,21 @@ const DeviceType: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Тип устройства</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Тип устройства</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
+                <Input
+                    placeholder='имя типа'
                     value={typeName}
-                    onChange={e => setTypeName(e.target.value)}
-                    placeholder='имя устройства'
-                    className='p-3 rounded bg-dark border border-white'
+                    onChange={e => setTypeName(e)}
                 />
-                <input
-                    type='text'
-                    value={typeSlug}
-                    onChange={e => setTypeSlug(e.target.value)}
+                <Input
                     placeholder='slug устройства'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={typeSlug}
+                    onChange={e => setTypeSlug(e)}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать тип устройства'
+                    handleClick={() => {
                         dispatch(
                             deviceTypeReducer.create({
                                 name: typeName,
@@ -48,10 +46,7 @@ const DeviceType: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать тип устройства
-                </button>
+                />
             </div>
             <Table
                 columns={deviceType}

@@ -3,21 +3,20 @@ import { toast } from 'react-toastify'
 import ToastMessage from '../components/ToastMessage'
 import { IWebSocketNotification } from '../models/webSocketNotification'
 
-const socketHelper = (socket: WebSocket, dispatch: () => any) => {
+const socketHelper = (socket: WebSocket, callback: () => void) => {
     socket.onopen = () => {
         console.log('WS onopen')
     }
     socket.onmessage = event => {
-        const data: IWebSocketNotification = JSON.parse(JSON.parse(event.data))
+        const message: IWebSocketNotification = JSON.parse(JSON.parse(event.data))
         if (
-            data.type === 'info'
-            && data.data.desc === 'organization_upload_started'
+            message.type === 'info'
+            && message.data.slug === 'organization_upload_started'
         ) {
             toast.warn(
                 <ToastMessage
-                    text1='Загрузка организации...'
-                    text2={`type: ${data.type}`}
-                    text3={`desc: ${data.data.desc}`}
+                    name={message.data.name}
+                    desc={message.data.desc}
                 />,
                 {
                     position: 'bottom-right',
@@ -27,15 +26,14 @@ const socketHelper = (socket: WebSocket, dispatch: () => any) => {
             )
         }
         if (
-            data.type === 'success'
-            && data.data.desc === 'organization_upload_successed'
+            message.type === 'success'
+            && message.data.slug === 'organization_upload_successed'
         ) {
-            dispatch()
+            callback()
             toast.success(
                 <ToastMessage
-                    text1='Организация загружена'
-                    text2={`type: ${data.type}`}
-                    text3={`desc: ${data.data.desc}`}
+                    name={message.data.name}
+                    desc={message.data.desc}
                 />,
                 {
                     position: 'bottom-right',
@@ -45,14 +43,13 @@ const socketHelper = (socket: WebSocket, dispatch: () => any) => {
             )
         }
         if (
-            data.type === 'error'
-            && data.data.desc === 'organization_upload_failed'
+            message.type === 'error'
+            && message.data.slug === 'organization_upload_failed'
         ) {
             toast.error(
                 <ToastMessage
-                    text1='Ошибка загрузки'
-                    text2={`type: ${data.type}`}
-                    text3={`desc: ${data.data.desc}`}
+                    name={message.data.name}
+                    desc={message.data.desc}
                 />,
                 {
                     position: 'bottom-right',
@@ -61,7 +58,7 @@ const socketHelper = (socket: WebSocket, dispatch: () => any) => {
                 },
             )
         }
-        console.log('WS onmessage', data)
+        console.log('WS onmessage', message)
     }
     socket.onclose = () => {
         console.log('WS onclose')

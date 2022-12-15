@@ -1,15 +1,15 @@
 @import 'default';
 
 .table-wrapper {
-    background: $black2;
+    background: var(--background-color);
     padding: 0px 120px;
 }
 
 .table-content {
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
-    border: 1px solid $gray;
-    background: $black;
+    border: 1px solid var(--border-table-color);
+    background: var(--background-color-2);
     table {
         margin-bottom: 0;
         thead {
@@ -20,21 +20,21 @@
                 font-weight: 700;
                 font-size: 20px;
                 line-height: 24px;
-                color: #ffffff;
+                color: var(--text-color-my);
                 padding: 23px 47px;
             }
         }
 
         tbody {
             tr {
-                background: $black;
+                background: var(--background-color-2);
                 &:hover {
-                    background: $black2;
+                    background: var(--background-color);
                 }
                 &:nth-child(2n) {
-                    background: $black;
+                    background: var(--background-color-2);
                     &:hover {
-                        background: $black2;
+                        background: var(--background-color);
                     }
                 }
             }
@@ -42,7 +42,7 @@
         tr {
             width: 100%;
             min-height: 50px;
-            border-bottom: 1px solid $gray;
+            border-bottom: 1px solid var(--border-table-color);
         }
         td {
             vertical-align: middle;
@@ -51,7 +51,7 @@
             font-weight: 500;
             font-size: 20px;
             line-height: 24px;
-            color: #ffffff;
+            color: var(--text-color-my);
             padding: 23px 47px;
             min-height: 70px;
             border-bottom-width: 0px;
@@ -59,21 +59,21 @@
     }
 }
 
-.table-header {
-    display: flex;
-    position: relative;
-    flex-wrap: wrap;
-    width: 100%;
-    margin-left: 12px;
-    vertical-align: middle;
-    align-items: center;
-    h3 {
-        font-family: 'TTHoves-DemiBold', sans-serif;
-        font-size: 16px;
-        color: $black;
-        margin: 0px 0px 0px 12px;
-    }
-}
+// .table-header {
+//     display: flex;
+//     position: relative;
+//     flex-wrap: wrap;
+//     width: 100%;
+//     margin-left: 12px;
+//     vertical-align: middle;
+//     align-items: center;
+//     h3 {
+//         font-family: 'TTHoves-DemiBold', sans-serif;
+//         font-size: 16px;
+//         color: v
+//         margin: 0px 0px 0px 12px;
+//     }
+// }
 
 .actions-wrapper {
     display: flex;
@@ -89,8 +89,8 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background: $black;
-    border: 1px solid $gray;
+    background: var(--background-color-2);
+    border: 1px solid var(--border-table-color);
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;
     border-top-width: 0;
@@ -112,25 +112,25 @@
         border-radius: 10px;
         cursor: pointer;
         text-decoration: none;
-        background: $black;
+        background: var(--background-color-2);
         font-family: 'Montserrat-Medium';
         font-style: normal;
         font-weight: 500;
         font-size: 20px;
         line-height: 24px;
         &:hover {
-            background: $black2;
+            background: var(--background-color);
         }
         span {
             display: flex;
             position: relative;
             align-items: center;
-            color: #ffffff;
+            color: var(--text-color-my);
         }
     }
     .table-page-link {
         &:hover {
-            border: 3px solid $border;
+            border: 3px solid var(--border-color);
         }
     }
     .active-action {

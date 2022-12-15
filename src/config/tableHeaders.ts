@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react'
 import { IRegion } from '../models/region'
 
 export const device = [
@@ -168,13 +167,13 @@ export const systemMessage = [
 
 export default {
     device,
-    // deviceType,
-    // inventoryType,
+    deviceType,
+    inventoryType,
     organization,
-    // permission,
-    // permissionGroup,
-    // permissionLevel,
-    // region,
-    // regionType,
-    // systemMessage,
+    permission,
+    permissionGroup,
+    permissionLevel,
+    region,
+    regionType,
+    systemMessage,
 }

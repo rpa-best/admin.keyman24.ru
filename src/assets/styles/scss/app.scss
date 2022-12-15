@@ -7,11 +7,52 @@
     flex-direction: column;
     width: 100%;
     min-height: 100vh;
-    background: $black2;
+    background: var(--background-color);
     overflow-x: auto;
 }
 
-* {
-    color: #31d79b;
+.custom-input {
+    background: #fff;
+    border: 1px solid var(--text-color-my);
+    padding: 10px 17px;
+    border-radius: 12px;
+    font-family: 'Montserrat-Medium';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 145%;
+    letter-spacing: -0.01em;
+    color: #000;
+    margin-left: 10px;
+    &::-webkit-input-placeholder {
+        /* WebKit browsers */
+        color: $gray;
+    }
+    &:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: $gray;
+    }
+    &::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: $gray;
+    }
+    &:-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: $gray;
+    }
 }
 
+.custom-button {
+    display: flex;
+    background-color: $green;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 17px;
+    align-items: center;
+    text-align: center;
+    font-family: 'Montserrat-Regular';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+}

@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/async'
-import socketHelper from '../../helpers/socketHelper'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import {
     createGuestWorker,
     fetchGuestWorker,
@@ -11,6 +10,9 @@ import Table from '../Table'
 import { organization } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
 import { organizationReducer } from '../../store'
+import { selectStyles, themeUnset } from '../../config/selectStyles'
+import Input from '../Input'
+import Button from '../Button'
 
 const Organization: FC = () => {
     const dispatch = useAppDispatch()
@@ -21,10 +23,6 @@ const Organization: FC = () => {
     const [org, setOrg] = useState('')
     const [guestWorker, setGuestWorker] = useState<number[]>([])
 
-    const socket = useRef<WebSocket>()
-    const { WS_URL } = process.env
-    const fetcheduser = useAppSelector(state => state.user.user)
-
     const rowsLength = useAppSelector(state => state.organization.count)
     const pagesCount = pagesLength(rowsLength)
     const [currentPage, setPage] = useState(1)
@@ -34,19 +32,6 @@ const Organization: FC = () => {
             organizationReducer.fetchWithOffset(currentOffset(currentPage)),
         )
         dispatch(fetchGuestWorker())
-
-        socket.current = new WebSocket(
-            `${WS_URL}${fetcheduser?.username}/?token=${localStorage.getItem(
-                'token',
-            )}`,
-        )
-
-        socketHelper(socket.current, () =>
-            dispatch(
-                organizationReducer.fetchWithOffset(currentOffset(currentPage)),
-            ))
-
-        return () => socket.current?.close()
     }, [currentPage])
 
     const temp = fetchedGW.map(item => {
@@ -59,17 +44,6 @@ const Organization: FC = () => {
     interface TempOptions {
         value: number
         label: string
-    }
-
-    const colorStyles = {
-        valueContainer: (base: any, state: any) => ({
-            ...base,
-            backgroundColor: state.isSelected ? 'red' : 'white',
-        }),
-        input: (base: any, state: any) => ({
-            ...base,
-            display: state.selectProps.menuIsOpen ? 'block' : 'none,',
-        }),
     }
 
     const handleAddGuest = (e: any) => {
@@ -100,49 +74,41 @@ const Organization: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Организация</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Организация</h1>
             <div className='d-flex mt-3'>
                 <Select
                     placeholder='найти организацию'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
                     onChange={handleAddGuest}
                     isMulti
-                    styles={colorStyles}
+                    styles={selectStyles}
                     cacheOptions
                     loadOptions={loadOptions}
                     defaultOptions={temp}
+                    theme={theme => themeUnset(theme)}
                 />
-                <button
-                    type='button'
-                    onClick={async () => {
-                        await dispatch(createGuestWorker(guestWorker))
+                <Button
+                    title='Загрузить организацию'
+                    handleClick={() => {
+                        dispatch(createGuestWorker(guestWorker))
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Загрузить организацию
-                </button>
+                />
             </div>
 
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={org}
-                    onChange={e => setOrg(e.target.value)}
+                <Input
                     placeholder='имя организации'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={org}
+                    onChange={e => setOrg(e)}
                 />
-                <button
-                    type='button'
-                    onClick={async () => {
-                        await dispatch(
+                <Button
+                    title='Создать организацию'
+                    handleClick={() => {
+                        dispatch(
                             organizationReducer.create({ name: org }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать организацию
-                </button>
+                />
             </div>
 
             <Table

@@ -2,22 +2,21 @@
 
 :root{
     /* ===== Colors ===== */
-    --body-color: #E4E9F7;
-    --sidebar-color: #FFF;
-    --primary-color: #695CFE;
-    --primary-color-light: #F6F5FF;
-    --toggle-color: #DDD;
-    --text-color: #707070;
+    // --body-color: #E4E9F7;
+    // --sidebar-color: #FFF;
+    // --primary-color: #695CFE;
+    // --primary-color-light: #F6F5FF;
+    // --toggle-color: #DDD;
+    // --text-color: #707070;
 
     /* ====== Transition ====== */
-    --tran-03: all 0.2s ease;
-    --tran-03: all 0.3s ease;
-    --tran-04: all 0.3s ease;
-    --tran-05: all 0.3s ease;
+    --tran-03: all 0.3s ease, color 0s, background-color 0s;
+    // --tran-04: all 0.4s ease;
+    // --tran-05: all 0.5s ease;
 }
 
 .sidebar-wrapper {
-    border-right: 2px solid $border;
+    border-right: 2px solid var(--border-color);
     backdrop-filter: blur(20px);
 }
 
@@ -25,8 +24,8 @@
  .sidebar{
     height: 100%;
     width: 350px;
-    background: $black;
-    transition: var(--tran-05); 
+    background: var(--background-color-2);
+    transition: var(--tran-03); 
 }
 .sidebar.close{
     width: 100px;
@@ -53,7 +52,7 @@
 .sidebar .text,
 .sidebar .icon{
     // color: var(--text-color);
-    transition: var(--tran-03);
+    // transition: var(--tran-03);
 }
 
 .sidebar .text{
@@ -77,7 +76,7 @@
     transform: rotate(90deg);
     height: 25px;
     width: 25px;
-    background-color: #000;
+    background-color: var(--text-color-inversion);
     color: var(--sidebar-color);
     border-radius: 50%;
     display: flex;
@@ -85,7 +84,7 @@
     justify-content: center;
     font-size: 22px;
     cursor: pointer;
-    transition: var(--tran-05);
+    // transition: var(--tran-05);
 }
 
 .sidebar.close .toggle svg{
@@ -102,13 +101,16 @@
     width: 100%;
     border-radius: 6px;
     text-decoration: none;
-    transition: var(--tran-03);
+    // transition: var(--tran-03);
+    // transition: all 0s ease;
     .marker-link {
         min-width: 5px;
         height: 100%;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
-        background: $black;
+        background: var(--marker-link-color);
+        // transition: all 0s ease;
+        // transition: var(--tran-03); 
     }
     .active {
         background: $green;
@@ -119,12 +121,14 @@
    
 }
 .sidebar li a:hover .icon,
-.sidebar li a:hover .text{
-    // color: var(--sidebar-color);
+.sidebar li a .text{
+    // color: red;
+     transition: var(--tran-03);
+     font-family: 'Montserrat-Medium';
 }
 body.dark .sidebar li a:hover .icon,
 body.dark .sidebar li a:hover .text{
-    color: var(--text-color);
+    color: var(--text-color-my);
 }
 
 .sidebar .menu-bar {
@@ -141,7 +145,7 @@ body.dark .sidebar li a:hover .text{
     border-radius: 6px;
     background-color: var(--primary-color-light);
     position: relative;
-    transition: var(--tran-05);
+    // transition: var(--tran-05);
 }
 
 .menu-bar .mode .sun-moon{
@@ -179,7 +183,7 @@ body.dark .mode .sun-moon i.moon{
     width: 40px;
     border-radius: 25px;
     background-color: var(--toggle-color);
-    transition: var(--tran-05);
+    // transition: var(--tran-05);
 }
 
 .switch::before{
@@ -192,7 +196,7 @@ body.dark .mode .sun-moon i.moon{
     left: 5px;
     transform: translateY(-50%);
     background-color: var(--sidebar-color);
-    transition: var(--tran-04);
+    // transition: var(--tran-04);
 }
 
 body.dark .switch::before{

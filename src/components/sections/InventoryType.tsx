@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { inventoryTypeReducer } from '../../store'
 import Table from '../Table'
 import { inventoryType } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Input from '../Input'
+import Button from '../Button'
 
 const InventoryType: FC = () => {
     const dispatch = useAppDispatch()
@@ -22,25 +24,21 @@ const InventoryType: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Тип инвентаря</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Тип инвентаря</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={typeName}
-                    onChange={e => setTypeName(e.target.value)}
+                <Input
                     placeholder='имя инвентаря'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={typeName}
+                    onChange={e => setTypeName(e)}
                 />
-                <input
-                    type='text'
-                    value={typeSlug}
-                    onChange={e => setTypeSlug(e.target.value)}
+                <Input
                     placeholder='slug инвентаря'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={typeSlug}
+                    onChange={e => setTypeSlug(e)}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать тип инвентаря'
+                    handleClick={() => {
                         dispatch(
                             inventoryTypeReducer.create({
                                 name: typeName,
@@ -49,10 +47,7 @@ const InventoryType: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать тип инвентаря
-                </button>
+                />
             </div>
             <Table
                 columns={inventoryType}

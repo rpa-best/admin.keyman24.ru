@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { deviceReducer, deviceTypeReducer } from '../../store'
 import Table from '../Table'
 import { device } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Button from '../Button'
+import Input from '../Input'
+import { selectStyles, themeUnset } from '../../config/selectStyles'
 
 const Device: FC = () => {
     const dispatch = useAppDispatch()
@@ -43,25 +46,25 @@ const Device: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Устройство</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Устройство</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={deviceName}
-                    onChange={e => setDeviceName(e.target.value)}
+                <Input
                     placeholder='имя устройства'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={deviceName}
+                    onChange={e => setDeviceName(e)}
                 />
                 <Select
                     options={temp}
                     placeholder='выберите тип'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
+                    className='ms-3'
+                    styles={selectStyles}
                     onChange={changeHandler}
+                    theme={theme => themeUnset(theme)}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать Устройство'
+                    handleClick={() => {
                         dispatch(
                             deviceReducer.create({
                                 name: deviceName,
@@ -69,10 +72,7 @@ const Device: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать Устройство
-                </button>
+                />
             </div>
             <Table
                 columns={device}

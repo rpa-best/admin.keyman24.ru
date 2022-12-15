@@ -36,13 +36,16 @@ const SidebarLink: FC<SidebarLinkProps> = (props: SidebarLinkProps) => {
                         </span>
                     </>
                 )}
-                <motion.span
+                <span
                     className='text nav-text'
-                    initial={{ color: '#A1A1A1' }}
-                    animate={{ color: match ? '#fff' : '#A1A1A1' }}
+                    style={{
+                        color: match
+                            ? 'var(--text-color-active)'
+                            : 'var(--text-color-inactive)',
+                    }}
                 >
                     {title}
-                </motion.span>
+                </span>
             </Link>
         </li>
     )

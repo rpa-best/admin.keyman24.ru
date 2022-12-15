@@ -20,6 +20,7 @@ export default class RegionService<Model, CreateInput> {
     initialState: {
         list: Model[]
         count: number
+        offset: number
         isLoading: boolean
         error: string | null
     }
@@ -31,6 +32,7 @@ export default class RegionService<Model, CreateInput> {
         this.initialState = {
             list: [],
             count: 0,
+            offset: 0,
             isLoading: false,
             error: null,
         }
@@ -41,9 +43,14 @@ export default class RegionService<Model, CreateInput> {
         return callAction()
     }
 
-    fetchWithOffset(offset: number) {
+    fetchWithOffset(offset?: number) {
         const callAction = thunks.fetchWithOffsetThunk(this.name, this.service)
-        return callAction(offset)
+        const temp = offset ?? this.initialState.offset
+        this.initialState = {
+            ...this.initialState,
+            offset: temp,
+        }
+        return callAction(this.initialState.offset)
     }
 
     create(data: typeof this.createInput) {

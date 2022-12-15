@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { permissionReducer } from '../../store'
 import Table from '../Table'
 import { permission } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import Input from '../Input'
+import Button from '../Button'
 
 const Permission: FC = () => {
     const dispatch = useAppDispatch()
@@ -23,32 +25,26 @@ const Permission: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Права доступа</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Права доступа</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={permName}
-                    onChange={e => setTypeName(e.target.value)}
+                <Input
                     placeholder='имя права доступа'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={permName}
+                    onChange={e => setTypeName(e)}
                 />
-                <input
-                    type='text'
-                    value={permSlug}
-                    onChange={e => setTypeSlug(e.target.value)}
+                <Input
                     placeholder='slug права доступа'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={permSlug}
+                    onChange={e => setTypeSlug(e)}
                 />
-                <input
-                    type='number'
-                    value={permLevel}
-                    onChange={e => setTypeLevel(Number(e.target.value))}
+                <Input
                     placeholder='уровень права доступа'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={permLevel}
+                    onChange={e => setTypeLevel(Number(e))}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать право доступа'
+                    handleClick={() => {
                         dispatch(
                             permissionReducer.create({
                                 name: permName,
@@ -57,10 +53,7 @@ const Permission: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать право доступа
-                </button>
+                />
             </div>
             <Table
                 columns={permission}

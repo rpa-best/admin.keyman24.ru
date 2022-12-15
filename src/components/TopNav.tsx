@@ -1,12 +1,13 @@
 import React, { FC } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import '../assets/styles/scss/topNav.scss'
-import { useAppDispatch, useAppSelector } from '../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks'
 import { logout } from '../store/slices/userSlice'
 import SVGNotifications from '../assets/img/topnav/notifications.svg'
 import SVGMessages from '../assets/img/topnav/messages.svg'
 import SVGAvatar from '../assets/img/topnav/avatar.svg'
 import SVGDropdownArrow from '../assets/img/topnav/dropdown-arrow.svg'
+import useTheme from '../hooks/useTheme'
 
 const TopNav: FC = () => {
     const user = useAppSelector(state => state.user.user)
@@ -15,6 +16,12 @@ const TopNav: FC = () => {
     const handleClick = () => {
         dispatch(logout())
         navigate('/login')
+    }
+
+    const { theme, setTheme } = useTheme()
+
+    const handleTheme = () => {
+        setTheme(theme === 'dark' ? 'light' : 'dark')
     }
 
     return (
@@ -28,6 +35,13 @@ const TopNav: FC = () => {
                     {/* <h2>Название системы</h2> */}
                 </div>
                 <div className='tools-wrapper d-flex'>
+                    <input
+                        className='search-line me-3'
+                        readOnly
+                        role='button'
+                        value='Сменить тему'
+                        onClick={() => handleTheme()}
+                    />
                     <input
                         className='search-line'
                         readOnly

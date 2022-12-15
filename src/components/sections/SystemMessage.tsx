@@ -1,10 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import Select from 'react-select/creatable'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks/useReduxHooks'
 import { systemMessageReducer } from '../../store'
 import Table from '../Table'
 import { systemMessage } from '../../config/tableHeaders'
 import { currentOffset, pagesLength } from '../../helpers/tablePaginationHelper'
+import { selectStyles, themeUnset } from '../../config/selectStyles'
+import Input from '../Input'
+import Button from '../Button'
 
 const SystemMessage: FC = () => {
     const dispatch = useAppDispatch()
@@ -31,42 +34,37 @@ const SystemMessage: FC = () => {
 
     return (
         <>
-            <h1 className='h1'>Системные сообщения</h1>
+            <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>Системные сообщения</h1>
             <div className='d-flex mt-3'>
-                <input
-                    type='text'
-                    value={sysMesName}
-                    onChange={e => setTypeName(e.target.value)}
+                <Input
                     placeholder='имя сообщения'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={sysMesName}
+                    onChange={e => setTypeName(e)}
                 />
-                <input
-                    type='text'
-                    value={sysMesSlug}
-                    onChange={e => setTypeSlug(e.target.value)}
+                <Input
                     placeholder='slug сообщения'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={sysMesSlug}
+                    onChange={e => setTypeSlug(e)}
                 />
-                <input
-                    type='text'
-                    value={sysMesDesc}
-                    onChange={e => setTypeDesc(e.target.value)}
+                <Input
                     placeholder='описние сообщения'
-                    className='p-3 rounded bg-dark border border-white'
+                    value={sysMesDesc}
+                    onChange={e => setTypeDesc(e)}
                 />
                 <Select
                     options={temp}
                     placeholder='выберите тип'
                     noOptionsMessage={() => 'name not found'}
-                    className='ms-3 align-items-center d-flex'
+                    className='ms-3'
+                    styles={selectStyles}
                     onChange={(e: any) => {
                         setType(e.value)
                     }}
-                    required
+                    theme={theme => themeUnset(theme)}
                 />
-                <button
-                    type='button'
-                    onClick={() => {
+                <Button
+                    title='Создать сообщение'
+                    handleClick={() => {
                         dispatch(
                             systemMessageReducer.create({
                                 name: sysMesName,
@@ -76,10 +74,7 @@ const SystemMessage: FC = () => {
                             }),
                         )
                     }}
-                    className='ms-3 p-3 rounded bg-dark border border-white'
-                >
-                    Создать сообщение
-                </button>
+                />
             </div>
             <Table
                 columns={systemMessage}

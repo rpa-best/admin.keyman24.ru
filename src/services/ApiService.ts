@@ -14,11 +14,11 @@ export default class ApiService<Model, CreateInput> implements IService {
     }
 
     async fetch(): Promise<AxiosResponse> {
-        return $api.get<Model[]>(this.endpoint)
+        return $api.get<Model[]>(`${this.endpoint}?ordering=id`)
     }
 
     async fetchWithOffset(offset: number): Promise<AxiosResponse<any, any>> {
-        return $api.get<Model[]>(`${this.endpoint}?offset=${offset}`)
+        return $api.get<Model[]>(`${this.endpoint}?offset=${offset}&ordering=id`)
     }
 
     async create(data: CreateInput): Promise<AxiosResponse<Model>> {
