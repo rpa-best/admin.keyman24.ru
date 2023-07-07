@@ -10,7 +10,7 @@ import SVGDropdownArrow from '../assets/img/topnav/dropdown-arrow.svg'
 import useTheme from '../hooks/useTheme'
 
 const TopNav: FC = () => {
-    const user = useAppSelector(state => state.user.user)
+    const user = useAppSelector(state => state.account.user)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const handleClick = () => {
@@ -31,11 +31,11 @@ const TopNav: FC = () => {
                     <Link to='/'>
                         <h1>KeyMan24</h1>
                     </Link>
-                    {/* <span className='separator' /> */}
-                    {/* <h2>Название системы</h2> */}
+                    <span className='separator' />
+                    <h2>Admin</h2>
                 </div>
                 <div className='tools-wrapper d-flex'>
-                    <input
+                    {/* <input
                         className='search-line me-3'
                         readOnly
                         role='button'
@@ -48,7 +48,7 @@ const TopNav: FC = () => {
                         role='button'
                         value='Выйти'
                         onClick={() => handleClick()}
-                    />
+                    /> */}
                     <span className='separator' />
                     <div className='notifications tools-icon'>
                         <a href='/'>
@@ -68,26 +68,52 @@ const TopNav: FC = () => {
                         </a>
                     </div>
                     <span className='separator' />
-                    <div className='user-wrapper d-flex'>
-                        <div className='avatar tools-icon'>
-                            <a href='/'>
+                    <div className='dropdown'>
+                        <div
+                            className='btn user-wrapper'
+                            role='button'
+                            data-bs-toggle='dropdown'
+                            aria-expanded='false'
+                        >
+                            <div className='avatar tools-icon'>
                                 <SVGAvatar
-                                    style={{ height: '40px', width: '40px' }}
+                                    style={{
+                                        height: '40px',
+                                        width: '40px',
+                                    }}
                                 />
-                            </a>
-                        </div>
-                        <div className='user d-flex flex-column justify-content-center align-items-center'>
-                            <div className='name'>{`${user?.name} ${user?.surname}`}</div>
-                            <div className='role'>{user?.username}</div>
-                        </div>
-                        <span className='dropdown-arr' />
-                        <div className='dropdown-arr tools-icon d-flex align-items-center'>
-                            <a href='/'>
+                            </div>
+                            <div className='user'>
+                                <div className='name'>{`${user?.name} ${user?.surname}`}</div>
+                                <div className='role'>{user?.username}</div>
+                            </div>
+                            <div className='dropdown-arr tools-icon'>
                                 <SVGDropdownArrow
-                                    style={{ height: '7px', width: '14px' }}
+                                    style={{
+                                        height: '15px',
+                                        width: '15px',
+                                    }}
                                 />
-                            </a>
+                            </div>
                         </div>
+                        <ul className='dropdown-menu'>
+                            <li className='dropdown-item'>
+                                <button
+                                    type='button'
+                                    onClick={() => handleTheme()}
+                                >
+                                    Сменить тему
+                                </button>
+                            </li>
+                            <li className='dropdown-item'>
+                                <button
+                                    type='button'
+                                    onClick={() => handleClick()}
+                                >
+                                    Выйти
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

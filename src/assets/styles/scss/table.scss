@@ -2,7 +2,10 @@
 
 .table-wrapper {
     background: var(--background-color);
-    padding: 0px 120px;
+    margin-top: 52px;
+    padding-left: 87px;
+    padding-right: 120px;
+    min-height: 500px;
 }
 
 .table-content {
@@ -10,18 +13,28 @@
     border-top-right-radius: 40px;
     border: 1px solid var(--border-table-color);
     background: var(--background-color-2);
+    // min-height: 500px;
     table {
         margin-bottom: 0;
         thead {
             th {
                 vertical-align: middle;
-                font-family: 'Montserrat-Bold';
-                font-style: normal;
-                font-weight: 700;
-                font-size: 20px;
-                line-height: 24px;
-                color: var(--text-color-my);
+                // font-family: 'Montserrat-Bold';
+                // font-style: normal;
+                // font-weight: 700;
+                // font-size: 20px;
+                // line-height: 24px;
+                // color: var(--text-color-my);
                 padding: 23px 47px;
+                span {
+                    font-family: 'Montserrat-Bold';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 17px;
+                    color: var(--text-color-my);
+                    cursor: pointer;
+                }
             }
         }
 
@@ -49,12 +62,16 @@
             font-family: 'Montserrat-Medium';
             font-style: normal;
             font-weight: 500;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 14px;
+            line-height: 17px;
             color: var(--text-color-my);
-            padding: 23px 47px;
+            padding: 12px 47px;
             min-height: 70px;
             border-bottom-width: 0px;
+            max-width: 250px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            // white-space: nowrap;
         }
     }
 }
@@ -80,6 +97,11 @@
     float: right;
     position: relative;
     align-items: center;
+    width: 200px;
+    justify-content: center;
+    a:nth-child(n + 1) {
+        margin-left: 21px;
+    }
 }
 
 .pagination-wrapper {
@@ -102,7 +124,8 @@
     flex-wrap: wrap;
     width: 100%;
     margin-left: 31px;
-    .table-page-link, .active-action {
+    .table-page-link,
+    .active-action {
         display: flex;
         height: 45px;
         width: 45px;
@@ -116,8 +139,8 @@
         font-family: 'Montserrat-Medium';
         font-style: normal;
         font-weight: 500;
-        font-size: 20px;
-        line-height: 24px;
+        font-size: 14px;
+        line-height: 17px;
         &:hover {
             background: var(--background-color);
         }

@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useAppDispatch } from '../hooks/useReduxHooks'
+import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks'
 import { auth, setAuth } from '../store/slices/userSlice'
 import '../assets/styles/scss/loginPage.scss'
 import { circleAnimation } from '../config/motionAnimations'
+import Spinner from '../components/Spinner'
 
 const LoginPage: FC = () => {
     const dispatch = useAppDispatch()
@@ -15,6 +16,8 @@ const LoginPage: FC = () => {
 
     const [name, setUsername] = useState('')
     const [pass, setPass] = useState('')
+
+    const { isLoading } = useAppSelector(state => state.account)
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -32,7 +35,14 @@ const LoginPage: FC = () => {
         })
     }
 
-    // return <Form title='Login' handleClick={handleLogin} />
+    if (isLoading) {
+        return (
+            <div className='d-flex min-vh-100 justify-content-center align-items-center'>
+                <Spinner />
+            </div>
+        )
+    }
+
     return (
         <motion.div
             initial='hidden'

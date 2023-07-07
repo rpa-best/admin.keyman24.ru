@@ -10,7 +10,7 @@ const Button: FC<ButtonProps> = ({ title, handleClick }) => {
         <button
             type='button'
             onClick={handleClick}
-            className='ms-3 custom-button'
+            className='custom-button'
         >
             {title}
         </button>

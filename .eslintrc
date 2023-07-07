@@ -63,6 +63,10 @@
         "global-require": "off",
         "react/jsx-indent-props": ["warn", 4],
         "no-param-reassign": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "function-paren-newline": "warn",
+        "no-confusing-arrow": "warn",
+        "operator-linebreak": "warn",
+        "react/jsx-curly-newline": "warn"
     }
 }

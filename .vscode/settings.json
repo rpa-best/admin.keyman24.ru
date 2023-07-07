@@ -3,6 +3,10 @@
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 100,
 
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+
     "liveSassCompile.settings.generateMap": true,
     "liveSassCompile.settings.formats": [
         {

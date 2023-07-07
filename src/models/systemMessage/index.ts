@@ -3,12 +3,12 @@ export interface ISystemMessage {
     slug: string
     name: string
     desc: string
-    type: 1 | 2 | 3
+    type: number
 }
 
 export interface ISystemMessageInput {
     slug: string
     name: string
     desc: string
-    type: 1 | 2 | 3
+    type: number
 }

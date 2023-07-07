@@ -55,6 +55,7 @@ const socketHelper = (socket: WebSocket, callback: () => void) => {
                     position: 'bottom-right',
                     toastId: 'customId2',
                     theme: 'colored',
+                    autoClose: 15000,
                 },
             )
         }

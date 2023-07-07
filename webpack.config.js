@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const plugins = [
     new HtmlWebpackPlugin({
-        title: 'keyman24',
+        title: 'Keyman24 - Admin',
         template: `${PATHS.src}/index.html`,
         favicon: `${PATHS.src}/assets/img/favicon.ico`,
     }),

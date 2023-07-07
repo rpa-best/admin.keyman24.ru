@@ -1,47 +1,25 @@
-import React, { FC, useEffect, useRef } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import Sidebar from '../components/Sidebar'
-import TopNav from '../components/TopNav'
+import React, { FC } from 'react'
 import '../assets/styles/scss/mainPage.scss'
-import 'react-toastify/dist/ReactToastify.css'
-import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks'
-import { organizationReducer } from '../store'
-import socketHelper from '../helpers/socketHelper'
+import Card from '../components/Card'
+import SVGUsers from '../assets/img/main/users.svg'
+import SVGKey from '../assets/img/main/key.svg'
+import SVGBriefcase from '../assets/img/main/briefcase.svg'
 
 const MainPage: FC = () => {
-    const dispatch = useAppDispatch()
-
-    const socket = useRef<WebSocket>()
-    const { WS_URL } = process.env
-    const fetcheduser = useAppSelector(state => state.user.user)
-
-    useEffect(() => {
-        socket.current = new WebSocket(
-            `${WS_URL}${fetcheduser?.username}/?token=${localStorage.getItem(
-                'token',
-            )}`,
-        )
-
-        socketHelper(
-            socket.current,
-            () => dispatch(organizationReducer.fetchWithOffset()),
-        )
-
-        return () => socket.current?.close()
-    }, [])
-
     return (
-        <>
-            <TopNav />
-            <main className='main-wrapper d-flex'>
-                <Sidebar />
-                <div className='temp-content d-flex flex-column w-100 min-vh-100 align-items-center mt-5'>
-                    <Outlet />
-                    <ToastContainer />
-                </div>
-            </main>
-        </>
+        // <div className='outlet-wrapper'>
+        //     <h1 className='h1' style={{ color: 'var(--text-color-my)' }}>
+        //         Main Page
+        //     </h1>
+        // </div>
+        <div className='home-wrapper'>
+            <h1 className='home-header'>Главное меню</h1>
+            <div className='short-info-wrapper'>
+                <Card title='Ключи' current={4} total={50} Icon={SVGKey} />
+                <Card title='Мат. ценности' current={1} total={18} Icon={SVGBriefcase} />
+                <Card title='Сотрудники' current={4} total={10} Icon={SVGUsers} />
+            </div>
+        </div>
     )
 }
 

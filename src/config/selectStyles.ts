@@ -1,28 +1,53 @@
 export const selectStyles = {
     valueContainer: (base: any, state: any) => ({
         ...base,
-        background: state.isSelected ? 'red' : 'white',
+        // background: state.isSelected ? 'red' : 'white',
         padding: '0px',
         margin: '0px',
+        // width: '100%',
+        // display: 'flex',
     }),
-    // input: (base: any, state: any) => ({
-    //     ...base,
-    //     // display: state.selectProps.menuIsOpen ? 'block' : 'none,',
-    // }),
+    input: (base: any, state: any) => ({
+        ...base,
+    }),
+    placeholder: (base: any, state: any) => ({
+        ...base,
+        color: '#a1a1a1',
+        fontFamily: 'Montserrat-Medium',
+        fontStyle: 'normal',
+        fontWeight: '500',
+        fontSize: '16px',
+        lineHeight: '145%',
+        letterSpacing: '-0.01em',
+    }),
     multiValue: (base: any, state: any) => ({
         ...base,
         background: '#308D92',
-        color: 'var(--text-color)',
+        // color: 'var(--text-color)',
         padding: '5px 8px',
         borderRadius: '12px',
         fontSize: '20px',
+        color: '#fff',
+        // maxWidth: '220px',
+        // width: '100%',
+    }),
+    multiValueLabel: (base: any, state: any) => ({
+        ...base,
+        width: '100%',
+        color: '#fff',
+    }),
+    multiValueRemove: (base: any, state: any) => ({
+        ...base,
+        maxWidth: '25px',
     }),
     control: (base: any, state: any) => ({
         ...base,
         borderColor: state.isSelected && 'var(--text-color)',
         padding: '10px 17px',
         borderRadius: '12px',
-        minWidth: '350px',
+        background: '#F7F7F7',
+        // width: '100%',
+        // display: 'flex',
     }),
     // noOptionsMessage: (base: any, state: any) => ({
     //     ...base,
@@ -32,18 +57,28 @@ export const selectStyles = {
     //     ...base,
     //     background: '#fff',
     // }),
+    container: (base: any, state: any) => ({
+        ...base,
+        width: '100%',
+    }),
     menu: (base: any, state: any) => ({
         ...base,
         width: '100%',
     }),
     menuList: (base: any, state: any) => ({
         ...base,
+        flexDirection: 'column',
         color: 'black',
         fontSize: '16px',
     }),
     indicatorsContainer: (base: any, state: any) => ({
         ...base,
-        marginLeft: '15px',
+        // paddingLeft: '15px',
+        // background: 'blue',
+        maxWidth: '85px',
+        justifyContent: 'flex-end',
+
+        // width: '100%',
     }),
 
     indicatorSeparator: (base: any, state: any) => ({
@@ -56,11 +91,14 @@ export const selectStyles = {
         background: '#31d79b',
         marginLeft: '15px',
         borderRadius: '12px',
+        maxWidth: '35px',
+        float: 'right',
     }),
     option: (base: any, state: any) => ({
         ...base,
         padding: '10px 17px',
         background: state.isFocused ? '#31d79b' : '#fff',
+        color: 'black',
     }),
 }
 

@@ -1,16 +1,35 @@
 export interface IOrganization {
-    id: number
+    readonly id: number
     name: string
-    create_at: string
-    lc_id: number | null | undefined
+    readonly create_at: string
+    lc_id: number | null| undefined
     inn: string | null
-    adsress: string | null
+    address: string | null
     phone: string | null
     email: string | null
-    region: number | null | undefined
-    devices: [number | null | undefined]
+    region: number | null| undefined
 }
 
 export interface IOrganizationInput {
     name: string
+    inn: string | null
+    address: string | null
+    phone: string | null
+    email: string | null
+    region: number | null| undefined
+}
+
+export interface IOrganizationNested {
+    readonly id: number
+    from_date: string | null
+    to_date: string | null
+    file: string | null
+    to_org: IOrganization
+}
+
+export interface IOrganizationNestedInput {
+    from_date: string | null
+    to_date: string | null
+    file: string | null
+    to_org: number
 }

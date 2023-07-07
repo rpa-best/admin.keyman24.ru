@@ -1,5 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import { isRejected, isPending } from '../../helpers/actionsHelper'
+import {
+    createSlice,
+    createAsyncThunk,
+    PayloadAction,
+    isPending,
+    isRejected,
+} from '@reduxjs/toolkit'
+// import { isRejected } from '../../helpers/actionsHelper'
 import { IGuestWorker, IGuestWorkerInput } from '../../models/guestWorker'
 import GuestWorkerService from '../../services/reduxServices/GuestWorkerService'
 
@@ -88,14 +94,14 @@ const guestWorkerSlice = createSlice({
                 state.guestWorker = payload
                 state.isLoading = false
                 state.error = null
-                console.log('guestWorker fulfilled')
+                console.log('fetch GuestWorker fulfilled')
             })
             // fetchByName guestWorker
             .addCase(fetchByNameGuestWorker.fulfilled, (state, { payload }) => {
                 state.guestWorker = payload
                 state.isLoading = false
                 state.error = null
-                console.log('guestWorker fulfilled')
+                console.log('fetchByName GuestWorker fulfilled')
             })
             // create guestWorker
             .addCase(createGuestWorker.fulfilled, (state, { payload }) => {
@@ -105,14 +111,28 @@ const guestWorkerSlice = createSlice({
                 console.log('create guestWorker fulfilled')
             })
             // defaults
-            .addMatcher(isPending, state => {
-                state.isLoading = true
-                state.error = null
-            })
-            .addMatcher(isRejected, (state, action: PayloadAction<string>) => {
-                state.error = action.payload
-                state.isLoading = false
-            })
+            .addMatcher(
+                isPending(
+                    fetchGuestWorker,
+                    fetchByNameGuestWorker,
+                    createGuestWorker,
+                ),
+                state => {
+                    state.isLoading = true
+                    state.error = null
+                },
+            )
+            .addMatcher(
+                isRejected(
+                    fetchGuestWorker,
+                    fetchByNameGuestWorker,
+                    createGuestWorker,
+                ),
+                (state, action: PayloadAction<string>) => {
+                    state.error = action.payload
+                    state.isLoading = false
+                },
+            )
     },
 })
 

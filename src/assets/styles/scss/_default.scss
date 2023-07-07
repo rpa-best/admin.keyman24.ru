@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {font-size: inherit; font-weight: inherit;}
     font-family: 'Montserrat-Regular';
 }
 
-h1, h2, p, ul {
+h1, h2, h3, h4, h5, p, ul {
     margin: 0px;
     padding: 0px;
 }
@@ -56,8 +56,62 @@ a {
     }
 }
 
+.nav-tabs {
+    margin-top: 52px;
+    padding-left: 87px;
+    padding-right: 120px;
+    width: 100%;
+    display: flex;
+}
+
+.tab-content {
+    width: 100%;
+}
+
 :root {  
     --toastify-toast-width: 500px;
 }
+
+.react-datepicker {
+    font-family: 'Montserrat-Regular'!important;
+}
+
+.react-datepicker__day--selected {
+    background-color: $green!important;
+}
+
+.react-datepicker__day--keyboard-selected {
+    background-color: $green!important;
+    color: white;
+}
+
+.form-check-input {
+    margin: 10px!important;
+    height: 40px;
+    width: 80px!important;
+    border: 0px;
+    box-shadow: none;
+    background-color: var(--checkbox-background-color);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e")!important;
+}
+
+.form-check-input:checked {
+    background-color: var(--checkbox-checked-background-color);
+    background-image: var(--checkbox-checked-circle-url)!important;
+}
+
+.form-switch .form-check-input:focus {
+    box-shadow: none;
+}
+
+// .form-check-input:checked {
+//     background-color: $green;
+//     border-color: $green;
+// }
+
+// .form-switch .form-check-input:focus {
+//     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='grey'/%3e%3c/svg%3e");
+//     // background-image: unset;
+// }
 
 @import "media";
