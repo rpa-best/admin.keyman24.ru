@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, useEffect, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import Select from 'react-select/async'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { Form } from 'react-bootstrap'
@@ -97,6 +97,7 @@ const FormOrg: FC<FormOrgProps> = props => {
             phone: data.phone,
             email: data.email,
             region: data.region,
+            prime: data.prime,
         },
         validationSchema: getValidationSchema('org'),
         onSubmit: (values, { setSubmitting }) => {
@@ -226,6 +227,18 @@ const FormOrg: FC<FormOrgProps> = props => {
                             value={nullToEmptyString(formik.values.email)}
                         />
                     </div>
+                    {isEdit && <div className='input-row-wrapper gap-4'>
+                        <h3
+                            className='h8'
+                            style={{ color: 'var(--text-color-my)' }}
+                        >
+                            Прайм статус
+                        </h3>
+                        <input checked={formik.values.prime}
+                               onChange={(v: ChangeEvent<HTMLInputElement>) => formik.setFieldValue('prime', !formik.values.prime)}
+                               name='prime'
+                               type='checkbox' />
+                    </div>}
 
                     {/* <div className='input-row-wrapper flex-column'>
                         <h3
