@@ -24,6 +24,7 @@ import Table from '../Table'
 import nullToEmptyString from '../../helpers/nullToEmptyString'
 import getValidationSchema from '../../config/getValidationSchema'
 import PickListDevice from '../PickList/PickListDevice'
+import axios from 'axios'
 
 interface FormOrgProps {
     id: number
@@ -35,6 +36,7 @@ const FormOrg: FC<FormOrgProps> = props => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
+    const [subsCost, setSubsCost] = useState(0)
     const { id, title, mode } = props
     const fetchedGW = useAppSelector(state => state.guestWorker.guestWorker)
     const fetchedRegions = useAppSelector(state => state.region.list)
@@ -89,6 +91,27 @@ const FormOrg: FC<FormOrgProps> = props => {
         }, 500)
     }
 
+    useEffect(() => {
+        const authorization = {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+        axios.get('https://py.keyman24.ru/api/v1.1/admin/subscription/', {
+            headers: authorization,
+        })
+            .then((d) => {
+                if (!d) {
+                    return
+                }
+                const subscription = d.data.results.find((el: any) => el.org.id === data.id)
+                setSubsCost(subscription?.default_cost)
+            })
+    }, [])
+
+    useEffect(() => {
+        formik.setFieldValue('prime_cost', subsCost || data.prime_cost)
+    }, [data.prime_cost, subsCost])
+
+
     const formik = useFormik({
         initialValues: {
             name: data.name,
@@ -98,9 +121,10 @@ const FormOrg: FC<FormOrgProps> = props => {
             email: data.email,
             region: data.region,
             prime: data.prime,
+            prime_cost: data.prime_cost,
         },
         validationSchema: getValidationSchema('org'),
-        onSubmit: (values, { setSubmitting }) => {
+        onSubmit: async (values, { setSubmitting }) => {
             setSubmitting(true)
             try {
                 dispatch(organizationReducer.put(values))
@@ -227,18 +251,39 @@ const FormOrg: FC<FormOrgProps> = props => {
                             value={nullToEmptyString(formik.values.email)}
                         />
                     </div>
-                    {isEdit && <div className='input-row-wrapper gap-4'>
-                        <h3
-                            className='h8'
-                            style={{ color: 'var(--text-color-my)' }}
-                        >
-                            Прайм статус
-                        </h3>
-                        <input checked={formik.values.prime}
-                               onChange={(v: ChangeEvent<HTMLInputElement>) => formik.setFieldValue('prime', !formik.values.prime)}
-                               name='prime'
-                               type='checkbox' />
-                    </div>}
+                    {isEdit &&
+                        <>
+                            <div className='input-row-wrapper align-items-end gap-4'>
+                                <h3
+                                    className='h8'
+                                    style={{ color: 'var(--text-color-my)' }}
+                                >
+                                    Прайм статус
+                                </h3>
+                                <input checked={formik.values.prime}
+                                       onChange={(v: ChangeEvent<HTMLInputElement>) => formik.setFieldValue('prime', !formik.values.prime)}
+                                       name='prime'
+                                       type='checkbox' />
+                            </div>
+                            {formik.values.prime && <div className='input-row-wrapper flex-column'>
+                                <h3
+                                    className='h5'
+                                    style={{ color: 'var(--text-color-my)' }}
+                                >
+                                    Фиксированная цена
+                                </h3>
+                                <input
+                                    name='prime_cost'
+                                    className='custom-input'
+                                    onChange={formik.handleChange}
+                                    placeholder="Укажите цену"
+                                    onBlur={formik.handleBlur}
+                                    type='number'
+                                    value={formik.values.prime_cost}
+                                />
+                            </div>}
+                        </>
+                    }
 
                     {/* <div className='input-row-wrapper flex-column'>
                         <h3
@@ -277,6 +322,26 @@ const FormOrg: FC<FormOrgProps> = props => {
                             className='custom-button'
                             style={{ marginLeft: '0px' }}
                             onClick={() => {
+                                if (isEdit && formik.values.prime) {
+                                    const authorization = {
+                                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                                    }
+                                    axios.get('https://py.keyman24.ru/api/v1.1/admin/subscription/', {
+                                        headers: authorization,
+                                    })
+                                        .then(d => {
+                                            const subscriptionId = d.data.results.find((el: any) => el.org.id === data.id).id
+                                            axios.patch(`https://py.keyman24.ru/api/v1.1/admin/subscription/${subscriptionId}/`,
+                                                {
+                                                    default_cost: formik.values.prime_cost,
+                                                },
+                                                {
+                                                    headers: authorization,
+                                                },
+                                            )
+                                        })
+                                }
+
                                 dispatch(
                                     organizationReducer.put({
                                         id,

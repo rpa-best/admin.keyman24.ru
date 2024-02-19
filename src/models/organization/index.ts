@@ -2,6 +2,7 @@ export interface IOrganization {
     readonly id: number
     name: string
     prime: boolean
+    prime_cost: number
     readonly create_at: string
     lc_id: number | null| undefined
     inn: string | null
